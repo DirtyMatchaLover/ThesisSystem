@@ -1,0 +1,17 @@
+# Ignore sensitive data - NEVER UPLOAD PASSWORDS!
+.env
+config.ini
+includes/config.php
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore log files
+*.log
