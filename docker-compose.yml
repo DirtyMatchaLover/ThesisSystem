@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # PHP + Apache Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: thesis-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./uploads:/var/www/html/uploads # Persistent volume for uploads
+    networks:
+      - thesis-network
+
+  # MySQL Database Service
+  db:
+    image: mysql:8.0
+    container_name: thesis-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql # Auto-runs on first start
+    networks:
+      - thesis-network
+
+  # Nginx Web Server Service
+  webserver:
+    image: nginx:alpine
+    container_name: thesis-webserver
+    restart: unless-stopped
+    ports:
+      - "8000:80" # Access via http://localhost:8000
+    volumes:
+      - ./:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - thesis-network
+
+# Docker Networks and Volumes
+networks:
+  thesis-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
