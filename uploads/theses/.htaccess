@@ -1,0 +1,6 @@
+# Prevent direct execution
+Options -ExecCGI -Indexes
+AddHandler cgi-script .php .pl .py .jsp .asp .sh .cgi
+<Files ~ "\.(pdf)$">
+    Header set Content-Disposition attachment
+</Files>

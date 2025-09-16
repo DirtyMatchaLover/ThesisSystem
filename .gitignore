@@ -1,17 +1,6 @@
-# Ignore sensitive data - NEVER UPLOAD PASSWORDS!
-.env
-config.ini
-includes/config.php
-
-# Ignore system files
-.DS_Store
-Thumbs.db
-
-# Ignore IDE files
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Ignore log files
-*.log
+# Ignore debugging or one-time seed scripts
+seed.php
+debug_login.php
+debug_login2.php
+reset_faculty_password.php
+make_hash.php
