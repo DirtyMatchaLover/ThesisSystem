@@ -18,3 +18,6 @@ COPY . /var/www/html/
 
 # Set proper permissions for the uploads directory
 RUN chown -R www-data:www-data /var/www/html/uploads
+
+# Expose port 80
+EXPOSE 80

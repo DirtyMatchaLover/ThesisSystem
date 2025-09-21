@@ -1,0 +1,237 @@
+/* ----------------------------
+   Footer Styles
+----------------------------- */
+
+.site-footer {
+    background: #e8e8e8;
+    border-top: 1px solid #ccc;
+    padding: 20px 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-text {
+    flex: 1;
+}
+
+.footer-nav {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.footer-nav a {
+    text-decoration: none;
+    color: #666;
+    padding: 5px 10px;
+    transition: color 0.2s ease;
+}
+
+.footer-nav a:hover {
+    color: #d32f2f;
+}
+
+.footer-nav .separator {
+    color: #999;
+    margin: 0 5px;
+}
+
+/* ----------------------------
+   Responsive Design
+----------------------------- */
+
+@media (max-width: 1200px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .site-header {
+        padding: 15px 20px;
+    }
+    
+    .home-container {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .site-header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+    }
+    
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .search-container {
+        order: 3;
+        width: 100%;
+    }
+    
+    .search-container input {
+        min-width: auto;
+    }
+    
+    .navbar {
+        gap: 2px;
+        flex-wrap: wrap;
+    }
+    
+    .navbar a,
+    .nav-link {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+    
+    .logo span {
+        font-size: 20px;
+    }
+    
+    .home-container {
+        padding: 20px 15px;
+    }
+    
+    .welcome-title {
+        font-size: 1.5rem;
+    }
+    
+    .welcome-subtitle {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+    
+    .thesis-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .thesis-card {
+        padding: 15px;
+    }
+    
+    .stats-summary {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .stat-item {
+        flex-direction: row;
+        gap: 10px;
+    }
+    
+    .stat-divider {
+        display: none;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .footer-nav {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-header {
+        padding: 10px 15px;
+    }
+    
+    .logo {
+        gap: 10px;
+    }
+    
+    .logo img {
+        height: 40px;
+        width: 40px;
+    }
+    
+    .logo span {
+        font-size: 18px;
+    }
+    
+    .home-container {
+        padding: 15px 10px;
+    }
+    
+    .welcome-title {
+        font-size: 1.3rem;
+    }
+    
+    .welcome-subtitle {
+        font-size: 1.8rem;
+    }
+    
+    .thesis-card {
+        padding: 12px;
+    }
+    
+    .thesis-title {
+        font-size: 1rem;
+    }
+    
+    .btn-view-more {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .search-container {
+        padding: 6px 15px;
+    }
+    
+    .search-container input {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+}
+
+/* ----------------------------
+   Print Styles
+----------------------------- */
+
+@media print {
+    .site-header,
+    .site-footer,
+    .search-container,
+    .play-button,
+    .btn-view-more {
+        display: none !important;
+    }
+    
+    .home-container {
+        background: white !important;
+        border: none !important;
+        padding: 20px !important;
+    }
+    
+    .thesis-card {
+        border: 1px solid #ddd !important;
+        break-inside: avoid;
+        margin-bottom: 15px;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+}

@@ -1,16 +1,213 @@
 <?php
-// Initialize data variables with defaults to prevent undefined errors
-$theses = $theses ?? [];
-$totalTheses = $totalTheses ?? 0;
-$currentPage = $currentPage ?? 1;
-$totalPages = $totalPages ?? 1;
-$searchQuery = $searchQuery ?? '';
-$filterType = $filterType ?? '';
-$category = $category ?? '';
-$year = $year ?? '';
-$author = $author ?? '';
-$filterOptions = $filterOptions ?? ['years' => [], 'authors' => [], 'categories' => []];
-$hasFilters = $hasFilters ?? false;
+// Advanced Research Search Page (No JavaScript Required)
+require_once __DIR__ . '/../models/Database.php';
+require_once __DIR__ . '/../helpers.php';
+
+// Get search parameters
+$searchQuery = trim($_GET['search'] ?? '');
+$title = trim($_GET['title'] ?? '');
+$author = trim($_GET['author'] ?? '');
+$adviser = trim($_GET['adviser'] ?? '');
+$department = $_GET['department'] ?? '';
+$strand = $_GET['strand'] ?? '';
+$academic_year = $_GET['academic_year'] ?? '';
+$keywords = trim($_GET['keywords'] ?? '');
+$abstract_contains = trim($_GET['abstract'] ?? '');
+$date_from = $_GET['date_from'] ?? '';
+$date_to = $_GET['date_to'] ?? '';
+$min_views = $_GET['min_views'] ?? '';
+$max_views = $_GET['max_views'] ?? '';
+$sort_by = $_GET['sort_by'] ?? 'newest';
+$results_per_page = (int)($_GET['per_page'] ?? 12);
+
+// Pagination
+$currentPage = max(1, (int)($_GET['page'] ?? 1));
+$offset = ($currentPage - 1) * $results_per_page;
+
+// Check if any filters are applied
+$hasFilters = !empty($searchQuery) || !empty($title) || !empty($author) || !empty($adviser) || 
+              !empty($department) || !empty($strand) || !empty($academic_year) || !empty($keywords) ||
+              !empty($abstract_contains) || !empty($date_from) || !empty($date_to) || 
+              !empty($min_views) || !empty($max_views);
+
+// Build advanced search query
+try {
+    $db = Database::getInstance();
+    
+    // Base query with LEFT JOINs for comprehensive search
+    $sql = "SELECT DISTINCT t.*, 
+                   u.name as author_name, 
+                   u.strand as author_strand,
+                   u.department as author_department,
+                   DATE_FORMAT(t.created_at, '%M %d, %Y') as formatted_date,
+                   DATE_FORMAT(t.created_at, '%Y') as year_only
+            FROM theses t 
+            LEFT JOIN users u ON t.user_id = u.id 
+            WHERE t.status = 'approved'";
+    
+    $params = [];
+    
+    // General search (searches across multiple fields)
+    if (!empty($searchQuery)) {
+        $sql .= " AND (
+            t.title LIKE ? OR 
+            t.abstract LIKE ? OR 
+            u.name LIKE ? OR 
+            t.adviser_name LIKE ? OR
+            t.department LIKE ? OR
+            u.strand LIKE ?
+        )";
+        $searchTerm = "%$searchQuery%";
+        $params = array_merge($params, [$searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm]);
+    }
+    
+    // Specific title search
+    if (!empty($title)) {
+        $sql .= " AND t.title LIKE ?";
+        $params[] = "%$title%";
+    }
+    
+    // Specific author search
+    if (!empty($author)) {
+        $sql .= " AND (u.name LIKE ? OR t.author_name LIKE ?)";
+        $authorTerm = "%$author%";
+        $params[] = $authorTerm;
+        $params[] = $authorTerm;
+    }
+    
+    // Specific adviser search
+    if (!empty($adviser)) {
+        $sql .= " AND t.adviser_name LIKE ?";
+        $params[] = "%$adviser%";
+    }
+    
+    // Department filter
+    if (!empty($department)) {
+        $sql .= " AND (t.department = ? OR u.department = ?)";
+        $params[] = $department;
+        $params[] = $department;
+    }
+    
+    // Strand filter
+    if (!empty($strand)) {
+        $sql .= " AND u.strand = ?";
+        $params[] = $strand;
+    }
+    
+    // Academic year filter
+    if (!empty($academic_year)) {
+        $sql .= " AND t.academic_year = ?";
+        $params[] = $academic_year;
+    }
+    
+    // Keywords search (searches in title and abstract)
+    if (!empty($keywords)) {
+        $keywordList = explode(',', $keywords);
+        $keywordConditions = [];
+        foreach ($keywordList as $keyword) {
+            $keyword = trim($keyword);
+            if (!empty($keyword)) {
+                $keywordConditions[] = "(t.title LIKE ? OR t.abstract LIKE ?)";
+                $keywordTerm = "%$keyword%";
+                $params[] = $keywordTerm;
+                $params[] = $keywordTerm;
+            }
+        }
+        if (!empty($keywordConditions)) {
+            $sql .= " AND (" . implode(' OR ', $keywordConditions) . ")";
+        }
+    }
+    
+    // Abstract contains specific text
+    if (!empty($abstract_contains)) {
+        $sql .= " AND t.abstract LIKE ?";
+        $params[] = "%$abstract_contains%";
+    }
+    
+    // Date range filters
+    if (!empty($date_from)) {
+        $sql .= " AND t.created_at >= ?";
+        $params[] = $date_from;
+    }
+    
+    if (!empty($date_to)) {
+        $sql .= " AND t.created_at <= ?";
+        $params[] = $date_to . ' 23:59:59';
+    }
+    
+    // View count filters
+    if (!empty($min_views)) {
+        $sql .= " AND t.view_count >= ?";
+        $params[] = (int)$min_views;
+    }
+    
+    if (!empty($max_views)) {
+        $sql .= " AND t.view_count <= ?";
+        $params[] = (int)$max_views;
+    }
+    
+    // Sorting
+    switch ($sort_by) {
+        case 'oldest':
+            $sql .= " ORDER BY t.created_at ASC";
+            break;
+        case 'title_az':
+            $sql .= " ORDER BY t.title ASC";
+            break;
+        case 'title_za':
+            $sql .= " ORDER BY t.title DESC";
+            break;
+        case 'author_az':
+            $sql .= " ORDER BY u.name ASC, t.author_name ASC";
+            break;
+        case 'most_viewed':
+            $sql .= " ORDER BY t.view_count DESC";
+            break;
+        case 'least_viewed':
+            $sql .= " ORDER BY t.view_count ASC";
+            break;
+        case 'newest':
+        default:
+            $sql .= " ORDER BY t.created_at DESC";
+            break;
+    }
+    
+    // Count total results for pagination
+    $countSql = str_replace(
+        "SELECT DISTINCT t.*, u.name as author_name, u.strand as author_strand, u.department as author_department, DATE_FORMAT(t.created_at, '%M %d, %Y') as formatted_date, DATE_FORMAT(t.created_at, '%Y') as year_only",
+        "SELECT COUNT(DISTINCT t.id)",
+        $sql
+    );
+    $countSql = preg_replace('/ORDER BY.*$/', '', $countSql);
+    
+    $countStmt = $db->prepare($countSql);
+    $countStmt->execute($params);
+    $totalTheses = $countStmt->fetchColumn();
+    $totalPages = ceil($totalTheses / $results_per_page);
+    
+    // Get paginated results
+    $sql .= " LIMIT ? OFFSET ?";
+    $params[] = $results_per_page;
+    $params[] = $offset;
+    
+    $stmt = $db->prepare($sql);
+    $stmt->execute($params);
+    $theses = $stmt->fetchAll();
+    
+    // Get filter options for dropdowns
+    $departments = $db->query("SELECT DISTINCT department FROM theses WHERE status = 'approved' AND department IS NOT NULL ORDER BY department")->fetchAll(PDO::FETCH_COLUMN);
+    $strands = $db->query("SELECT DISTINCT u.strand FROM users u JOIN theses t ON u.id = t.user_id WHERE t.status = 'approved' AND u.strand IS NOT NULL ORDER BY u.strand")->fetchAll(PDO::FETCH_COLUMN);
+    $years = $db->query("SELECT DISTINCT academic_year FROM theses WHERE status = 'approved' ORDER BY academic_year DESC")->fetchAll(PDO::FETCH_COLUMN);
+    
+} catch (Exception $e) {
+    error_log("Research search error: " . $e->getMessage());
+    $theses = [];
+    $totalTheses = 0;
+    $totalPages = 1;
+    $departments = [];
+    $strands = [];
+    $years = [];
+}
 ?>
 
 <?php include __DIR__ . '/layout/header.php'; ?>
@@ -20,11 +217,11 @@ $hasFilters = $hasFilters ?? false;
     <div class="home-container research-page">
         <!-- Page Header -->
         <div class="page-header">
-            <h1 class="page-title">Research Papers</h1>
+            <h1 class="page-title">Advanced Research Search</h1>
             <p class="page-subtitle">
-                Discover and explore academic research from Pasig Catholic College
+                Find specific research papers with powerful search filters
                 <?php if ($totalTheses > 0): ?>
-                    <span class="results-summary">(<?= number_format($totalTheses) ?> papers available)</span>
+                    <span class="results-summary">(<?= number_format($totalTheses) ?> papers found)</span>
                 <?php endif; ?>
             </p>
         </div>
@@ -32,116 +229,241 @@ $hasFilters = $hasFilters ?? false;
         <!-- Advanced Search Section -->
         <div class="advanced-search-section">
             <form method="GET" action="<?= route('research') ?>" class="search-form">
-                <!-- Main Search Bar -->
-                <div class="main-search-bar">
-                    <input 
-                        type="text" 
-                        name="search"
-                        value="<?= htmlspecialchars($searchQuery) ?>"
-                        placeholder="Search thesis papers, authors, topics..." 
-                        class="search-input-large"
-                    >
-                    <button type="submit" class="search-btn-large">
-                        <span class="search-icon-large">🔍</span>
-                        Search
-                    </button>
-                </div>
                 
-                <!-- Advanced Filters Toggle -->
-                <div class="filters-toggle">
-                    <button type="button" class="toggle-filters-btn" onclick="toggleFilters()" <?= $hasFilters ? 'data-active="true"' : '' ?>>
-                        <span class="filter-icon">⚙️</span>
-                        Advanced Filters
-                        <span class="toggle-arrow"><?= $hasFilters ? '▲' : '▼' ?></span>
-                    </button>
-                    <?php if ($hasFilters): ?>
-                        <a href="<?= route('research') ?>" class="clear-all-filters">Clear All</a>
-                    <?php endif; ?>
+                <!-- Quick Search -->
+                <div class="search-section">
+                    <h3 class="section-title">🔍 Quick Search</h3>
+                    <div class="main-search-bar">
+                        <input 
+                            type="text" 
+                            name="search"
+                            value="<?= htmlspecialchars($searchQuery) ?>"
+                            placeholder="Search everything (title, author, abstract, adviser...)" 
+                            class="search-input-large"
+                        >
+                        <button type="submit" class="search-btn-large">
+                            <span class="search-icon-large">🔍</span>
+                            Search
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Advanced Filters Panel -->
-                <div class="advanced-filters" id="advancedFilters" style="<?= $hasFilters ? 'display: block;' : 'display: none;' ?>">
-                    <div class="filters-row">
+                <!-- Specific Field Search -->
+                <div class="search-section">
+                    <h3 class="section-title">🎯 Specific Field Search</h3>
+                    <div class="filters-grid">
                         <div class="filter-group">
-                            <label>Sort By</label>
-                            <select name="filter" class="filter-select">
-                                <option value="">Default Order</option>
-                                <option value="recent" <?= $filterType === 'recent' ? 'selected' : '' ?>>Most Recent</option>
-                                <option value="popular" <?= $filterType === 'popular' ? 'selected' : '' ?>>Most Popular</option>
-                                <option value="alphabetical" <?= $filterType === 'alphabetical' ? 'selected' : '' ?>>Alphabetical</option>
-                            </select>
+                            <label class="filter-label">Title Contains:</label>
+                            <input 
+                                type="text" 
+                                name="title" 
+                                value="<?= htmlspecialchars($title) ?>"
+                                placeholder="Search in thesis titles only"
+                                class="filter-input"
+                            >
                         </div>
-
+                        
                         <div class="filter-group">
-                            <label>Publication Year</label>
-                            <select name="year" class="filter-select">
-                                <option value="">Any Year</option>
-                                <?php foreach (array_reverse($filterOptions['years']) as $yearOption): ?>
-                                    <option value="<?= $yearOption ?>" <?= $year === $yearOption ? 'selected' : '' ?>>
-                                        <?= $yearOption ?>
+                            <label class="filter-label">Author Name:</label>
+                            <input 
+                                type="text" 
+                                name="author" 
+                                value="<?= htmlspecialchars($author) ?>"
+                                placeholder="Student author name"
+                                class="filter-input"
+                            >
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Thesis Adviser:</label>
+                            <input 
+                                type="text" 
+                                name="adviser" 
+                                value="<?= htmlspecialchars($adviser) ?>"
+                                placeholder="Research adviser name"
+                                class="filter-input"
+                            >
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Keywords (comma-separated):</label>
+                            <input 
+                                type="text" 
+                                name="keywords" 
+                                value="<?= htmlspecialchars($keywords) ?>"
+                                placeholder="e.g. machine learning, AI, data analysis"
+                                class="filter-input"
+                            >
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Abstract Contains:</label>
+                            <input 
+                                type="text" 
+                                name="abstract" 
+                                value="<?= htmlspecialchars($abstract_contains) ?>"
+                                placeholder="Search inside thesis abstracts"
+                                class="filter-input"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="search-section">
+                    <h3 class="section-title">📚 Category & Academic Filters</h3>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label class="filter-label">Department:</label>
+                            <select name="department" class="filter-select">
+                                <option value="">All Departments</option>
+                                <?php foreach ($departments as $dept): ?>
+                                    <option value="<?= htmlspecialchars($dept) ?>" <?= $department === $dept ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($dept) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
+                        
                         <div class="filter-group">
-                            <label>Author</label>
-                            <select name="author" class="filter-select">
-                                <option value="">All Authors</option>
-                                <?php foreach ($filterOptions['authors'] as $authorOption): ?>
-                                    <option value="<?= htmlspecialchars($authorOption) ?>" <?= $author === $authorOption ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($authorOption) ?>
+                            <label class="filter-label">Academic Strand:</label>
+                            <select name="strand" class="filter-select">
+                                <option value="">All Strands</option>
+                                <?php foreach ($strands as $strandOption): ?>
+                                    <option value="<?= htmlspecialchars($strandOption) ?>" <?= $strand === $strandOption ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($strandOption) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
-                        <?php if (!empty($filterOptions['categories'])): ?>
-                            <div class="filter-group">
-                                <label>Subject Area</label>
-                                <select name="category" class="filter-select">
-                                    <option value="">All Subjects</option>
-                                    <?php foreach ($filterOptions['categories'] as $categoryOption): ?>
-                                        <option value="<?= htmlspecialchars($categoryOption) ?>" <?= $category === $categoryOption ? 'selected' : '' ?>>
-                                            <?= htmlspecialchars($categoryOption) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        <?php endif; ?>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Academic Year:</label>
+                            <select name="academic_year" class="filter-select">
+                                <option value="">All Years</option>
+                                <?php foreach ($years as $yearOption): ?>
+                                    <option value="<?= htmlspecialchars($yearOption) ?>" <?= $academic_year === $yearOption ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($yearOption) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="filters-actions">
-                        <button type="submit" class="apply-filters-btn">Apply Filters</button>
-                        <a href="<?= route('research') ?>" class="clear-filters-btn">Clear All</a>
+                <!-- Date & Popularity Filters -->
+                <div class="search-section">
+                    <h3 class="section-title">📅 Date & Popularity Filters</h3>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label class="filter-label">Published From:</label>
+                            <input 
+                                type="date" 
+                                name="date_from" 
+                                value="<?= htmlspecialchars($date_from) ?>"
+                                class="filter-input"
+                            >
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Published To:</label>
+                            <input 
+                                type="date" 
+                                name="date_to" 
+                                value="<?= htmlspecialchars($date_to) ?>"
+                                class="filter-input"
+                            >
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Minimum Views:</label>
+                            <input 
+                                type="number" 
+                                name="min_views" 
+                                value="<?= htmlspecialchars($min_views) ?>"
+                                placeholder="e.g. 10"
+                                min="0"
+                                class="filter-input"
+                            >
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Maximum Views:</label>
+                            <input 
+                                type="number" 
+                                name="max_views" 
+                                value="<?= htmlspecialchars($max_views) ?>"
+                                placeholder="e.g. 1000"
+                                min="0"
+                                class="filter-input"
+                            >
+                        </div>
                     </div>
+                </div>
+
+                <!-- Sort & Results Options -->
+                <div class="search-section">
+                    <h3 class="section-title">⚙️ Display Options</h3>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label class="filter-label">Sort Results By:</label>
+                            <select name="sort_by" class="filter-select">
+                                <option value="newest" <?= $sort_by === 'newest' ? 'selected' : '' ?>>Newest First</option>
+                                <option value="oldest" <?= $sort_by === 'oldest' ? 'selected' : '' ?>>Oldest First</option>
+                                <option value="title_az" <?= $sort_by === 'title_az' ? 'selected' : '' ?>>Title A-Z</option>
+                                <option value="title_za" <?= $sort_by === 'title_za' ? 'selected' : '' ?>>Title Z-A</option>
+                                <option value="author_az" <?= $sort_by === 'author_az' ? 'selected' : '' ?>>Author A-Z</option>
+                                <option value="most_viewed" <?= $sort_by === 'most_viewed' ? 'selected' : '' ?>>Most Viewed</option>
+                                <option value="least_viewed" <?= $sort_by === 'least_viewed' ? 'selected' : '' ?>>Least Viewed</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Results Per Page:</label>
+                            <select name="per_page" class="filter-select">
+                                <option value="6" <?= $results_per_page === 6 ? 'selected' : '' ?>>6 papers</option>
+                                <option value="12" <?= $results_per_page === 12 ? 'selected' : '' ?>>12 papers</option>
+                                <option value="24" <?= $results_per_page === 24 ? 'selected' : '' ?>>24 papers</option>
+                                <option value="48" <?= $results_per_page === 48 ? 'selected' : '' ?>>48 papers</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="search-actions">
+                    <button type="submit" class="btn-search-advanced">
+                        🔍 Search with Filters
+                    </button>
+                    <a href="<?= route('research') ?>" class="btn-clear-all">
+                        🗑️ Clear All Filters
+                    </a>
                 </div>
             </form>
         </div>
 
-        <!-- Results Section -->
+        <!-- Search Results Section -->
         <section class="research-results">
             <?php if (!empty($theses)): ?>
                 <div class="results-header">
                     <h3 class="results-title">
                         <?php if ($hasFilters): ?>
-                            Search Results
+                            🔍 Advanced Search Results
                         <?php else: ?>
-                            Browse Research Papers
+                            📚 All Research Papers
                         <?php endif; ?>
                     </h3>
                     <div class="results-count">
                         <span class="count-text">
                             Showing <?= count($theses) ?> of <?= number_format($totalTheses) ?> papers
+                            <?php if ($totalPages > 1): ?>
+                                (Page <?= $currentPage ?> of <?= $totalPages ?>)
+                            <?php endif; ?>
                         </span>
-                        <div class="view-options">
-                            <button class="view-btn active" data-view="grid" title="Grid View">⊞</button>
-                            <button class="view-btn" data-view="list" title="List View">☰</button>
-                        </div>
                     </div>
                 </div>
                 
-                <div class="thesis-grid" id="resultsGrid">
+                <div class="thesis-grid">
                     <?php foreach ($theses as $index => $thesis): ?>
                         <div class="thesis-card research-card" onclick="location.href='<?= route('thesis/show') ?>&id=<?= $thesis['id'] ?>'">
                             <div class="thesis-image">
@@ -157,19 +479,27 @@ $hasFilters = $hasFilters ?? false;
                             
                             <div class="thesis-content">
                                 <h4 class="thesis-title">
-                                    <?= htmlspecialchars(str_limit($thesis['title'] ?? 'Untitled', 80)) ?>
+                                    <?= htmlspecialchars(str_limit($thesis['title'] ?? 'Untitled', 70)) ?>
                                 </h4>
                                 
                                 <div class="thesis-meta">
-                                    <span class="thesis-author">
-                                        <?= htmlspecialchars($thesis['author'] ?? $thesis['author_name'] ?? 'Unknown Author') ?>
-                                    </span>
-                                    <span class="thesis-date">
-                                        <?= format_date($thesis['created_at'] ?? null, 'Y') ?> 
-                                        <?php if (!empty($thesis['strand'])): ?>
-                                            • <?= htmlspecialchars($thesis['strand']) ?>
+                                    <div class="thesis-author">
+                                        <strong>Author:</strong> <?= htmlspecialchars($thesis['author_name'] ?? $thesis['author'] ?? 'Unknown') ?>
+                                    </div>
+                                    <?php if (!empty($thesis['adviser_name'])): ?>
+                                        <div class="thesis-adviser">
+                                            <strong>Adviser:</strong> <?= htmlspecialchars($thesis['adviser_name']) ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="thesis-year">
+                                        <strong>Year:</strong> <?= htmlspecialchars($thesis['academic_year'] ?? 'N/A') ?>
+                                        <?php if (!empty($thesis['author_strand'])): ?>
+                                            | <strong>Strand:</strong> <?= htmlspecialchars($thesis['author_strand']) ?>
                                         <?php endif; ?>
-                                    </span>
+                                    </div>
+                                    <div class="thesis-date">
+                                        <strong>Published:</strong> <?= htmlspecialchars($thesis['formatted_date']) ?>
+                                    </div>
                                 </div>
 
                                 <?php if (!empty($thesis['abstract'])): ?>
@@ -177,22 +507,6 @@ $hasFilters = $hasFilters ?? false;
                                         <?= htmlspecialchars(str_limit($thesis['abstract'], 120)) ?>
                                     </div>
                                 <?php endif; ?>
-
-                                <!-- Visual lines for design -->
-                                <div class="thesis-lines">
-                                    <?php 
-                                    $patterns = [
-                                        ['long', 'medium', 'long', 'short'],
-                                        ['medium', 'long', 'short', 'long'],
-                                        ['long', 'short', 'medium', 'long'],
-                                        ['short', 'long', 'medium', 'short']
-                                    ];
-                                    $pattern = $patterns[$index % 4];
-                                    ?>
-                                    <?php foreach ($pattern as $lineType): ?>
-                                        <div class="thesis-line <?= $lineType ?>"></div>
-                                    <?php endforeach; ?>
-                                </div>
                             </div>
                             
                             <button class="play-button" aria-label="View research paper">
@@ -231,7 +545,7 @@ $hasFilters = $hasFilters ?? false;
                         </nav>
                         
                         <div class="pagination-info">
-                            Page <?= $currentPage ?> of <?= $totalPages ?>
+                            Page <?= $currentPage ?> of <?= $totalPages ?> • <?= number_format($totalTheses) ?> total results
                         </div>
                     </div>
                 <?php endif; ?>
@@ -240,10 +554,10 @@ $hasFilters = $hasFilters ?? false;
                 <!-- Empty State -->
                 <div class="empty-state">
                     <div class="empty-icon">🔍</div>
-                    <h3>No Papers Found</h3>
+                    <h3>No Research Papers Found</h3>
                     <?php if ($hasFilters): ?>
                         <p>
-                            No research papers match your search criteria.<br>
+                            No papers match your search criteria.<br>
                             Try adjusting your filters or search terms.
                         </p>
                         <a href="<?= route('research') ?>" class="btn btn-primary">Clear All Filters</a>
@@ -263,268 +577,5 @@ $hasFilters = $hasFilters ?? false;
         </section>
     </div>
 </div>
-
-<style>
-/* Research Page Enhanced Styles */
-
-.results-summary {
-    font-size: 0.9em;
-    color: #666;
-    font-weight: normal;
-}
-
-.clear-all-filters {
-    color: #d32f2f;
-    text-decoration: none;
-    font-size: 14px;
-    margin-left: 15px;
-    padding: 5px 10px;
-    border: 1px solid #d32f2f;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.clear-all-filters:hover {
-    background: #d32f2f;
-    color: white;
-    text-decoration: none;
-}
-
-/* Enhanced Research Cards */
-.thesis-stats {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    display: flex;
-    gap: 10px;
-}
-
-.view-count {
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 500;
-}
-
-.thesis-meta {
-    margin: 8px 0;
-    font-size: 12px;
-    color: #666;
-}
-
-.thesis-author {
-    font-weight: 600;
-    color: #d32f2f;
-}
-
-.thesis-date {
-    color: #999;
-}
-
-/* Pagination Styles */
-.pagination-container {
-    margin-top: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.pagination {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-}
-
-.page-link {
-    padding: 8px 12px;
-    text-decoration: none;
-    color: #333;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    font-size: 14px;
-}
-
-.page-link:hover {
-    background: #f5f5f5;
-    text-decoration: none;
-    color: #333;
-}
-
-.page-link.active {
-    background: #d32f2f;
-    color: white;
-    border-color: #d32f2f;
-}
-
-.pagination-info {
-    font-size: 14px;
-    color: #666;
-}
-
-/* Empty State */
-.empty-state {
-    text-align: center;
-    padding: 80px 20px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    margin-top: 20px;
-}
-
-.empty-state .empty-icon {
-    font-size: 64px;
-    margin-bottom: 20px;
-    opacity: 0.5;
-}
-
-.empty-state h3 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.empty-state p {
-    color: #666;
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 25px;
-}
-
-/* Enhanced List View */
-.thesis-grid.list-view .research-card {
-    display: flex;
-    flex-direction: row;
-    max-height: 140px;
-    align-items: stretch;
-}
-
-.thesis-grid.list-view .thesis-image {
-    width: 100px;
-    height: 100px;
-    flex-shrink: 0;
-    margin-right: 20px;
-}
-
-.thesis-grid.list-view .thesis-content {
-    flex: 1;
-    justify-content: flex-start;
-}
-
-.thesis-grid.list-view .thesis-lines {
-    display: none;
-}
-
-.thesis-grid.list-view .play-button {
-    position: relative;
-    bottom: auto;
-    right: auto;
-    margin-left: 15px;
-    align-self: center;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .research-page {
-        padding: 20px;
-    }
-    
-    .results-header {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .pagination {
-        flex-wrap: wrap;
-        gap: 3px;
-    }
-    
-    .page-link {
-        padding: 6px 10px;
-        font-size: 13px;
-    }
-    
-    /* Force grid view on mobile */
-    .thesis-grid.list-view {
-        display: grid !important;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
-    }
-    
-    .thesis-grid.list-view .research-card {
-        display: flex !important;
-        flex-direction: column !important;
-        max-height: none !important;
-    }
-    
-    .thesis-grid.list-view .thesis-image {
-        width: 100% !important;
-        height: 80px !important;
-        margin-right: 0 !important;
-        margin-bottom: 15px !important;
-    }
-    
-    .thesis-grid.list-view .thesis-lines {
-        display: flex !important;
-    }
-    
-    .thesis-grid.list-view .play-button {
-        position: absolute !important;
-        bottom: 15px !important;
-        right: 15px !important;
-        margin-left: 0 !important;
-    }
-}
-</style>
-
-<script>
-function toggleFilters() {
-    const filtersPanel = document.getElementById('advancedFilters');
-    const toggleArrow = document.querySelector('.toggle-arrow');
-    const toggleBtn = document.querySelector('.toggle-filters-btn');
-    
-    if (filtersPanel.style.display === 'none' || filtersPanel.style.display === '') {
-        filtersPanel.style.display = 'block';
-        toggleArrow.innerHTML = '▲';
-        toggleBtn.setAttribute('data-active', 'true');
-    } else {
-        filtersPanel.style.display = 'none';
-        toggleArrow.innerHTML = '▼';
-        toggleBtn.removeAttribute('data-active');
-    }
-}
-
-// View toggle functionality
-document.querySelectorAll('.view-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        // Remove active class from all buttons
-        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-        
-        // Add active class to clicked button
-        this.classList.add('active');
-        
-        const view = this.dataset.view;
-        const grid = document.getElementById('resultsGrid');
-        
-        if (view === 'list') {
-            grid.classList.add('list-view');
-        } else {
-            grid.classList.remove('list-view');
-        }
-    });
-});
-
-// Auto-submit form when filters change
-document.querySelectorAll('.filter-select').forEach(select => {
-    select.addEventListener('change', function() {
-        // Auto-submit on desktop, manual on mobile
-        if (window.innerWidth > 768) {
-            this.closest('form').submit();
-        }
-    });
-});
-</script>
 
 <?php include __DIR__ . '/layout/footer.php'; ?>
