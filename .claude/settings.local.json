@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(where:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(curl:*)",
+      "Bash(\"C:\\\\Program Files\\\\playit_gg\\\\bin\\\\playit.exe\" --help)",
+      "Bash(\"C:\\\\Program Files\\\\playit_gg\\\\bin\\\\playit.exe\" start -s)",
+      "Bash(timeout 5 tail:*)",
+      "Bash(\"C:\\\\Program Files\\\\playit_gg\\\\bin\\\\playit.exe\" start)",
+      "Bash(\"C:\\\\Program Files\\\\playit_gg\\\\bin\\\\playit.exe\" tunnels --help)",
+      "Bash(\"C:\\\\Program Files\\\\playit_gg\\\\bin\\\\playit.exe\" tunnels prepare --help)",
+      "Bash(/c/Users/keonb/OneDrive/Desktop/ngrok.exe http 8000)",
+      "Bash(/c/Users/keonb/OneDrive/Desktop/ngrok.exe version:*)",
+      "Bash(npx --version:*)",
+      "Bash(npx localtunnel --port 8000)",
+      "Bash(/c/Users/keonb/OneDrive/Desktop/ngrok.exe config add-authtoken:*)",
+      "Bash(/c/Users/keonb/OneDrive/Desktop/ngrok.exe http 8000 --log=stdout)",
+      "Bash(/c/Users/keonb/OneDrive/Desktop/ngrok.exe update:*)",
+      "Bash(mysql:*)",
+      "Bash(docker exec:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker logs:*)"
+    ]
+  }
+}

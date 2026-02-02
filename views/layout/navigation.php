@@ -24,27 +24,13 @@ if (!function_exists('current_user')) {
     <a href="<?= route('home') ?>">
       <img src="<?= asset('assets/images/pcc-logo.png') ?>" alt="PCC Logo">
     </a>
-    <span>Pasig Catholic College</span>
+    <div class="logo-text">
+      <span class="college-name">ResearchHub</span>
+      <span class="thesis-flow">Academic Research Portal</span>
+    </div>
   </div>
 
   <div class="header-right">
-    <!-- Enhanced Search with Live Results -->
-    <div class="search-container">
-      <input 
-        type="text" 
-        id="globalSearch" 
-        placeholder="Search theses, authors, topics..." 
-        autocomplete="off"
-      >
-      <span class="search-icon" onclick="performSearch()">🔍</span>
-      <span class="mic-icon" onclick="startVoiceSearch()">🎤</span>
-      
-      <!-- Search Results Dropdown -->
-      <div class="search-results" id="searchResults" style="display: none;">
-        <div class="search-loading">Searching...</div>
-      </div>
-    </div>
-
     <nav class="navbar">
       <!-- Home -->
       <a href="<?= route('home') ?>" class="nav-link <?= ($_GET['route'] ?? 'home') === 'home' ? 'active' : '' ?>">
@@ -57,47 +43,30 @@ if (!function_exists('current_user')) {
         About
       </a>
       <span class="separator">|</span>
-      
-      <!-- Research Dropdown -->
-      <div class="nav-dropdown">
-        <a href="<?= route('research') ?>" class="dropdown-trigger nav-link <?= ($_GET['route'] ?? '') === 'research' ? 'active' : '' ?>">
-          Research
-          <span class="dropdown-arrow">▼</span>
+
+      <!-- Browse Papers -->
+      <a href="<?= route('research') ?>" class="nav-link <?= ($_GET['route'] ?? '') === 'research' ? 'active' : '' ?>">
+        Browse Papers
+      </a>
+      <span class="separator">|</span>
+
+      <!-- Upload Thesis -->
+      <?php if (is_logged_in()): ?>
+        <a href="<?= route('thesis/create') ?>" class="nav-link <?= ($_GET['route'] ?? '') === 'thesis/create' ? 'active' : '' ?>">
+          Upload Thesis
         </a>
-        <div class="dropdown-menu">
-          <a href="<?= route('research') ?>" class="dropdown-item">
-            <span class="dropdown-icon">🔍</span>
-            Browse Papers
-          </a>
-          <a href="<?= route('research') ?>?filter=recent" class="dropdown-item">
-            <span class="dropdown-icon">⭐</span>
-            Latest Research
-          </a>
-          <a href="<?= route('research') ?>?filter=popular" class="dropdown-item">
-            <span class="dropdown-icon">📈</span>
-            Popular Papers
-          </a>
-          <?php if (is_logged_in()): ?>
-            <hr class="dropdown-divider">
-            <a href="<?= route('thesis/create') ?>" class="dropdown-item">
-              <span class="dropdown-icon">📝</span>
-              Upload Thesis
-            </a>
-            <?php if (current_user() && current_user()['role'] === 'student'): ?>
-              <a href="<?= route('thesis/list') ?>" class="dropdown-item">
-                <span class="dropdown-icon">📄</span>
-                My Submissions
-              </a>
-            <?php endif; ?>
-          <?php else: ?>
-            <hr class="dropdown-divider">
-            <a href="<?= route('auth/select') ?>" class="dropdown-item">
-              <span class="dropdown-icon">📝</span>
-              Upload Thesis
-            </a>
-          <?php endif; ?>
-        </div>
-      </div>
+      <?php else: ?>
+        <a href="<?= route('auth/select') ?>" class="nav-link">
+          Upload Thesis
+        </a>
+      <?php endif; ?>
+      <span class="separator">|</span>
+
+      <!-- Theme Toggle -->
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+        <span id="themeText">Dark</span>
+      </button>
 
       <!-- Role-specific Navigation -->
       <?php if (is_logged_in()): ?>
@@ -109,13 +78,17 @@ if (!function_exists('current_user')) {
           <a href="<?= route('admin/dashboard') ?>" class="nav-link <?= ($_GET['route'] ?? '') === 'admin/dashboard' ? 'active' : '' ?>">
             Dashboard
           </a>
+          <span class="separator">|</span>
+          <a href="<?= route('admin/analytics/research') ?>" class="nav-link <?= ($_GET['route'] ?? '') === 'admin/analytics/research' ? 'active' : '' ?>">
+            Research Analytics
+          </a>
         <?php endif; ?>
 
         <!-- User Menu Dropdown -->
         <span class="separator">|</span>
         <div class="nav-dropdown user-dropdown">
           <a href="#" class="dropdown-trigger nav-link">
-            <span class="user-icon">👤</span>
+            <span class="user-icon"></span>
             <?= $user ? htmlspecialchars(explode(' ', $user['name'])[0]) : 'User' ?>
             <span class="dropdown-arrow">▼</span>
           </a>
@@ -132,34 +105,57 @@ if (!function_exists('current_user')) {
               
               <?php if ($user['role'] === 'student'): ?>
                 <a href="<?= route('thesis/list') ?>" class="dropdown-item">
-                  <span class="dropdown-icon">📄</span>
+                  <span class="dropdown-icon"></span>
                   My Submissions
                 </a>
                 <a href="<?= route('thesis/create') ?>" class="dropdown-item">
-                  <span class="dropdown-icon">➕</span>
+                  <span class="dropdown-icon"></span>
                   New Submission
                 </a>
               <?php endif; ?>
               
               <a href="<?= route('profile') ?>" class="dropdown-item">
-                <span class="dropdown-icon">⚙️</span>
+                <span class="dropdown-icon">️</span>
                 Profile Settings
               </a>
               
-              <?php if (in_array($user['role'], ['admin', 'faculty'])): ?>
+              <?php if (in_array($user['role'], ['admin', 'faculty', 'librarian'])): ?>
                 <a href="<?= route('admin/users') ?>" class="dropdown-item">
-                  <span class="dropdown-icon">👥</span>
+                  <span class="dropdown-icon"></span>
                   Manage Users
                 </a>
+                <a href="<?= route('admin/analytics') ?>" class="dropdown-item">
+                  <span class="dropdown-icon"></span>
+                  System Analytics
+                </a>
+                <a href="<?= route('admin/analytics/research') ?>" class="dropdown-item">
+                  <span class="dropdown-icon"></span>
+                  Research Analytics
+                </a>
                 <a href="<?= route('admin/reports') ?>" class="dropdown-item">
-                  <span class="dropdown-icon">📊</span>
+                  <span class="dropdown-icon"></span>
                   Reports
                 </a>
+                <a href="<?= route('admin/combined-report') ?>" class="dropdown-item" style="color: #4caf50; font-weight: 600;">
+                  <span class="dropdown-icon">📊</span>
+                  All Users Activity (SOP Data)
+                </a>
+                <?php if ($user['role'] === 'admin'): ?>
+                  <hr class="dropdown-divider">
+                  <a href="/setup_activity_tracking.php" class="dropdown-item" style="color: #2196f3; font-weight: 600;">
+                    <span class="dropdown-icon">⚙️</span>
+                    Setup Activity Tracking
+                  </a>
+                  <a href="/clear_all_data.php" class="dropdown-item" style="color: #dc3545; font-weight: 600;">
+                    <span class="dropdown-icon">🗑️</span>
+                    Clear All Data
+                  </a>
+                <?php endif; ?>
               <?php endif; ?>
               
               <hr class="dropdown-divider">
               <a href="<?= route('auth/logout') ?>" class="dropdown-item logout-item">
-                <span class="dropdown-icon">🚪</span>
+                <span class="dropdown-icon"></span>
                 Logout
               </a>
             <?php endif; ?>
@@ -189,13 +185,29 @@ if (!function_exists('current_user')) {
   <div class="mobile-nav">
     <div class="mobile-nav-header">
       <span>Menu</span>
-      <button onclick="toggleMobileMenu()" class="mobile-nav-close">✕</button>
+      <button onclick="toggleMobileMenu()" class="mobile-nav-close"></button>
     </div>
     
     <div class="mobile-nav-content">
       <a href="<?= route('home') ?>" class="mobile-nav-item">Home</a>
-      <a href="<?= route('research') ?>" class="mobile-nav-item">Research</a>
-      
+      <a href="<?= route('about') ?>" class="mobile-nav-item">About</a>
+
+      <!-- Browse Papers -->
+      <a href="<?= route('research') ?>" class="mobile-nav-item">Browse Papers</a>
+
+      <!-- Theme Toggle (Mobile) -->
+      <a href="javascript:void(0)" onclick="toggleTheme()" class="mobile-nav-item" style="display: flex; align-items: center; justify-content: space-between;">
+        <span><i class="bi bi-moon-stars-fill" id="mobileThemeIcon"></i> Toggle Theme</span>
+        <span id="mobileThemeText" style="font-size: 12px; opacity: 0.7;">Dark</span>
+      </a>
+
+      <!-- Upload Thesis -->
+      <?php if (is_logged_in()): ?>
+        <a href="<?= route('thesis/create') ?>" class="mobile-nav-item">Upload Thesis</a>
+      <?php else: ?>
+        <a href="<?= route('auth/select') ?>" class="mobile-nav-item">Upload Thesis</a>
+      <?php endif; ?>
+
       <?php if (is_logged_in()): ?>
         <?php $user = current_user(); ?>
         <?php if ($user): ?>
@@ -213,6 +225,7 @@ if (!function_exists('current_user')) {
           
           <?php if (in_array($user['role'], ['faculty', 'admin', 'librarian'])): ?>
             <a href="<?= route('admin/dashboard') ?>" class="mobile-nav-item">Dashboard</a>
+            <a href="<?= route('admin/analytics/research') ?>" class="mobile-nav-item">Research Analytics</a>
           <?php endif; ?>
           
           <a href="<?= route('auth/logout') ?>" class="mobile-nav-item logout">Logout</a>
@@ -233,15 +246,77 @@ function toggleMobileMenu() {
   }
 }
 
-function performSearch() {
-  const searchInput = document.getElementById('globalSearch');
-  if (searchInput && searchInput.value.trim()) {
-    window.location.href = '<?= route('research') ?>?search=' + encodeURIComponent(searchInput.value);
+// Theme Toggle Functionality
+function toggleTheme() {
+  const body = document.body;
+  const themeIcon = document.getElementById('themeIcon');
+  const themeText = document.getElementById('themeText');
+  const mobileThemeIcon = document.getElementById('mobileThemeIcon');
+  const mobileThemeText = document.getElementById('mobileThemeText');
+
+  // Toggle dark theme class
+  body.classList.toggle('dark-theme');
+
+  // Get current theme
+  const isDark = body.classList.contains('dark-theme');
+
+  // Update icons and text
+  if (isDark) {
+    if (themeIcon) {
+      themeIcon.className = 'bi bi-sun-fill';
+    }
+    if (themeText) {
+      themeText.textContent = 'Light';
+    }
+    if (mobileThemeIcon) {
+      mobileThemeIcon.className = 'bi bi-sun-fill';
+    }
+    if (mobileThemeText) {
+      mobileThemeText.textContent = 'Light';
+    }
+    // Save preference to localStorage
+    localStorage.setItem('theme', 'dark');
+  } else {
+    if (themeIcon) {
+      themeIcon.className = 'bi bi-moon-stars-fill';
+    }
+    if (themeText) {
+      themeText.textContent = 'Dark';
+    }
+    if (mobileThemeIcon) {
+      mobileThemeIcon.className = 'bi bi-moon-stars-fill';
+    }
+    if (mobileThemeText) {
+      mobileThemeText.textContent = 'Dark';
+    }
+    // Save preference to localStorage
+    localStorage.setItem('theme', 'light');
   }
 }
 
-function startVoiceSearch() {
-  // Voice search functionality can be added here
-  alert('Voice search not implemented yet');
-}
+// Load saved theme preference on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const savedTheme = localStorage.getItem('theme');
+  const body = document.body;
+  const themeIcon = document.getElementById('themeIcon');
+  const themeText = document.getElementById('themeText');
+  const mobileThemeIcon = document.getElementById('mobileThemeIcon');
+  const mobileThemeText = document.getElementById('mobileThemeText');
+
+  if (savedTheme === 'dark') {
+    body.classList.add('dark-theme');
+    if (themeIcon) {
+      themeIcon.className = 'bi bi-sun-fill';
+    }
+    if (themeText) {
+      themeText.textContent = 'Light';
+    }
+    if (mobileThemeIcon) {
+      mobileThemeIcon.className = 'bi bi-sun-fill';
+    }
+    if (mobileThemeText) {
+      mobileThemeText.textContent = 'Light';
+    }
+  }
+});
 </script>

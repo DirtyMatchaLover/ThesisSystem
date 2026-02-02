@@ -5,7 +5,7 @@ class Thesis {
     private $db;
 
     public function __construct() {
-        $this->db = Database::getInstance(); // ✅ Fixed method call
+        $this->db = Database::getInstance(); //  Fixed method call
     }
 
     /**

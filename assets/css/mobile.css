@@ -1,0 +1,1298 @@
+/* ========================================
+   COMPREHENSIVE MOBILE RESPONSIVE STYLES
+   For PCC Thesis Management System
+======================================== */
+
+/* ===== BASE MOBILE FIXES ===== */
+@media (max-width: 768px) {
+    /* Prevent horizontal scroll */
+    body {
+        overflow-x: hidden;
+    }
+
+    /* Container adjustments */
+    .container {
+        padding: 0 10px;
+        max-width: 100%;
+    }
+
+    /* Home container specific */
+    .home-container {
+        padding: 20px 10px !important;
+    }
+
+    .research-page {
+        padding: 20px 10px !important;
+    }
+
+    /* Font size adjustments */
+    body {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    /* Page title adjustments */
+    .page-title {
+        font-size: 1.5rem !important;
+        padding: 10px 0 !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Stats summary */
+    .stats-summary {
+        padding: 15px 10px !important;
+        gap: 10px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .stat-number {
+        font-size: 1.5rem !important;
+    }
+
+    .stat-label {
+        font-size: 0.75rem !important;
+    }
+}
+
+/* ===== AUTH PAGES (Login, Register) ===== */
+@media (max-width: 768px) {
+    .login-container,
+    .register-container,
+    .auth-container {
+        padding: 20px 15px !important;
+        min-height: auto !important;
+    }
+
+    .auth-box,
+    .login-box,
+    .register-box {
+        padding: 30px 20px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 10px !important;
+    }
+
+    .login-header,
+    .auth-header {
+        margin-bottom: 20px !important;
+    }
+
+    .login-header img,
+    .auth-header img {
+        height: 60px !important;
+        width: 60px !important;
+    }
+
+    .login-title,
+    .auth-title {
+        font-size: 1.5rem !important;
+    }
+
+    .form-group {
+        margin-bottom: 15px !important;
+    }
+
+    .form-control {
+        padding: 12px !important;
+        font-size: 16px !important; /* Prevents iOS zoom on input focus */
+    }
+
+    .btn,
+    .btn-primary,
+    .btn-secondary {
+        width: 100% !important;
+        padding: 14px !important;
+        font-size: 16px !important;
+    }
+
+    .role-cards,
+    .role-select-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .role-card {
+        padding: 20px !important;
+    }
+}
+
+/* ===== ADMIN DASHBOARD ===== */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 15px !important;
+    }
+
+    .dashboard-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 15px !important;
+    }
+
+    .dashboard-stats,
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .stat-card {
+        padding: 15px !important;
+    }
+
+    .stat-number {
+        font-size: 1.75rem !important;
+    }
+
+    /* Action buttons */
+    .dashboard-actions,
+    .button-group {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .dashboard-actions .btn,
+    .button-group .btn {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+/* ===== TABLES (All Data Tables) ===== */
+@media (max-width: 768px) {
+    /* Make tables scrollable */
+    .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        width: 100% !important;
+    }
+
+    table {
+        min-width: 600px !important;
+        font-size: 13px !important;
+    }
+
+    table th,
+    table td {
+        padding: 10px 8px !important;
+        font-size: 13px !important;
+    }
+
+    /* Stack table on very small screens */
+    @media (max-width: 480px) {
+        .stack-mobile {
+            display: block !important;
+        }
+
+        .stack-mobile thead {
+            display: none !important;
+        }
+
+        .stack-mobile tbody,
+        .stack-mobile tr,
+        .stack-mobile td {
+            display: block !important;
+            width: 100% !important;
+        }
+
+        .stack-mobile tr {
+            margin-bottom: 15px !important;
+            border: 1px solid #ddd !important;
+            padding: 10px !important;
+            border-radius: 8px !important;
+        }
+
+        .stack-mobile td {
+            text-align: left !important;
+            padding: 8px !important;
+            position: relative !important;
+            padding-left: 50% !important;
+        }
+
+        .stack-mobile td::before {
+            content: attr(data-label) !important;
+            position: absolute !important;
+            left: 10px !important;
+            font-weight: bold !important;
+            color: #7b3f00 !important;
+        }
+    }
+}
+
+/* ===== MODALS & POPUPS ===== */
+@media (max-width: 768px) {
+    .modal-dialog,
+    .modal-content {
+        margin: 10px !important;
+        max-width: calc(100% - 20px) !important;
+        width: 100% !important;
+    }
+
+    .modal-body {
+        padding: 20px 15px !important;
+        max-height: 70vh !important;
+        overflow-y: auto !important;
+    }
+
+    .modal-header {
+        padding: 15px !important;
+    }
+
+    .modal-footer {
+        padding: 15px !important;
+        flex-direction: column !important;
+    }
+
+    .modal-footer .btn {
+        width: 100% !important;
+        margin: 5px 0 !important;
+    }
+}
+
+/* ===== FORMS ===== */
+@media (max-width: 768px) {
+    .form-row,
+    .form-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .form-group {
+        margin-bottom: 15px !important;
+    }
+
+    select.form-control,
+    textarea.form-control {
+        font-size: 16px !important; /* Prevents iOS zoom */
+    }
+
+    /* File upload */
+    .file-upload-area {
+        padding: 30px 15px !important;
+    }
+
+    .file-info {
+        font-size: 13px !important;
+    }
+}
+
+/* ===== PDF VIEWER ===== */
+@media (max-width: 768px) {
+    .pdf-viewer-container {
+        flex-direction: column !important;
+        height: auto !important;
+    }
+
+    .pdf-sidebar {
+        width: 100% !important;
+        max-height: 200px !important;
+        overflow-y: auto !important;
+        border-right: none !important;
+        border-bottom: 2px solid #d4a574 !important;
+    }
+
+    .pdf-main {
+        width: 100% !important;
+        height: 60vh !important;
+    }
+
+    .pdf-controls {
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        padding: 10px !important;
+    }
+
+    .pdf-controls button {
+        padding: 8px 12px !important;
+        font-size: 13px !important;
+    }
+
+    iframe {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+/* ===== THESIS SHOW PAGE ===== */
+@media (max-width: 768px) {
+    .thesis-detail-container {
+        padding: 15px !important;
+    }
+
+    .thesis-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .thesis-actions {
+        flex-direction: column !important;
+        width: 100% !important;
+        margin-top: 15px !important;
+    }
+
+    .thesis-actions .btn {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    }
+
+    .thesis-metadata {
+        grid-template-columns: 1fr !important;
+    }
+
+    .metadata-item {
+        padding: 12px !important;
+    }
+}
+
+/* ===== COMMENTS SECTION ===== */
+@media (max-width: 768px) {
+    .comments-section {
+        padding: 15px !important;
+    }
+
+    .comment {
+        padding: 12px !important;
+    }
+
+    .comment-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+    }
+
+    .comment-actions {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .comment-form textarea {
+        min-height: 100px !important;
+    }
+}
+
+/* ===== ANALYTICS PAGE ===== */
+@media (max-width: 768px) {
+    .analytics-container {
+        padding: 15px !important;
+    }
+
+    .chart-container {
+        padding: 15px !important;
+        overflow-x: auto !important;
+    }
+
+    .analytics-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .chart-wrapper {
+        min-width: 300px !important;
+    }
+}
+
+/* ===== PROFILE PAGE ===== */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 15px !important;
+    }
+
+    .profile-header {
+        flex-direction: column !important;
+        text-align: center !important;
+    }
+
+    .profile-avatar {
+        margin: 0 auto 15px !important;
+    }
+
+    .profile-tabs {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .profile-tab {
+        white-space: nowrap !important;
+        padding: 10px 15px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* ===== SEARCH RESULTS ===== */
+@media (max-width: 768px) {
+    .search-filters {
+        flex-direction: column !important;
+    }
+
+    .filter-dropdown {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    }
+
+    .search-sort {
+        width: 100% !important;
+    }
+}
+
+/* ===== THESIS CARDS - MOBILE OPTIMIZED ===== */
+@media (max-width: 768px) {
+    /* Grid Layout - 2 columns on mobile */
+    .thesis-grid,
+    .home-container .thesis-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 0 !important;
+    }
+
+    /* Compact Card Design */
+    .thesis-card,
+    .home-container .thesis-card {
+        min-height: 280px !important;
+        max-height: 280px !important;
+        padding: 0 !important;
+        border-width: 3px !important;
+        margin: 0 !important;
+    }
+
+    /* Card Content - Reduced Padding */
+    .thesis-content,
+    .home-container .thesis-content {
+        padding: 15px 12px 12px 12px !important;
+        gap: 8px !important;
+    }
+
+    /* Smaller Title */
+    .thesis-title,
+    .home-container .thesis-title {
+        font-size: 0.85rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 8px !important;
+        padding-bottom: 8px !important;
+        padding-top: 4px !important;
+        min-height: auto !important;
+        max-height: 2.4em !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+    }
+
+    /* Compact Metadata */
+    .thesis-meta,
+    .home-container .thesis-meta {
+        font-size: 0.65rem !important;
+        padding: 6px 0 !important;
+        margin-bottom: 8px !important;
+        line-height: 1.4 !important;
+    }
+
+    .thesis-meta > span,
+    .home-container .thesis-meta > span {
+        margin-bottom: 2px !important;
+    }
+
+    /* Smaller Abstract */
+    .thesis-abstract,
+    .home-container .thesis-abstract {
+        font-size: 0.7rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 8px !important;
+        padding: 6px 0 6px 8px !important;
+        max-height: 80px !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 3 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+    }
+
+    .thesis-abstract strong,
+    .home-container .thesis-abstract strong {
+        font-size: 0.75rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    /* Smaller Read Button */
+    .play-button,
+    .home-container .play-button {
+        padding: 6px 12px !important;
+        font-size: 0.65rem !important;
+        bottom: 10px !important;
+        right: 10px !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    /* Remove decorative elements on mobile for cleaner look */
+    .home-container .thesis-card::after {
+        display: none !important;
+    }
+}
+
+/* ===== VERY SMALL MOBILE (< 480px) - Single Column ===== */
+@media (max-width: 480px) {
+    .thesis-grid,
+    .home-container .thesis-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .thesis-card,
+    .home-container .thesis-card {
+        min-height: 320px !important;
+        max-height: 320px !important;
+    }
+
+    .thesis-title,
+    .home-container .thesis-title {
+        font-size: 0.95rem !important;
+        -webkit-line-clamp: 3 !important;
+        max-height: 3.6em !important;
+    }
+
+    .thesis-meta,
+    .home-container .thesis-meta {
+        font-size: 0.7rem !important;
+    }
+
+    .thesis-abstract,
+    .home-container .thesis-abstract {
+        font-size: 0.75rem !important;
+        -webkit-line-clamp: 4 !important;
+        max-height: 100px !important;
+    }
+
+    .play-button,
+    .home-container .play-button {
+        padding: 8px 16px !important;
+        font-size: 0.7rem !important;
+    }
+}
+
+/* ===== TABLET (481px - 768px) ===== */
+@media (min-width: 481px) and (max-width: 768px) {
+    .thesis-grid,
+    .home-container .thesis-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 15px !important;
+    }
+
+    .thesis-card,
+    .home-container .thesis-card {
+        min-height: 300px !important;
+        max-height: 300px !important;
+    }
+}
+
+/* ===== LARGER TABLETS (769px - 1024px) ===== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .thesis-grid,
+    .home-container .thesis-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 18px !important;
+    }
+
+    .thesis-card,
+    .home-container .thesis-card {
+        min-height: 350px !important;
+        max-height: 350px !important;
+    }
+}
+
+/* ===== GENERAL CARDS & GRIDS ===== */
+@media (max-width: 768px) {
+    .card-grid,
+    .cards-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .card {
+        margin-bottom: 15px !important;
+    }
+
+    .card-header,
+    .card-footer {
+        padding: 12px 15px !important;
+    }
+
+    .card-body {
+        padding: 15px !important;
+    }
+}
+
+/* ===== NAVIGATION IMPROVEMENTS ===== */
+@media (max-width: 768px) {
+    /* Ensure dropdowns are accessible */
+    .dropdown-menu {
+        width: 100% !important;
+        position: static !important;
+        margin-top: 10px !important;
+    }
+
+    /* Fix sticky header on mobile */
+    .site-header {
+        position: relative !important;
+    }
+}
+
+/* ===== BUTTONS ===== */
+@media (max-width: 768px) {
+    /* Stack button groups */
+    .btn-group {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .btn-group .btn {
+        width: 100% !important;
+        margin-bottom: 8px !important;
+        border-radius: 6px !important;
+    }
+
+    /* Make icon buttons larger for touch */
+    .btn-icon {
+        min-width: 44px !important;
+        min-height: 44px !important;
+    }
+}
+
+/* ===== BREADCRUMBS ===== */
+@media (max-width: 768px) {
+    .breadcrumb {
+        flex-wrap: wrap !important;
+        font-size: 13px !important;
+        padding: 10px !important;
+    }
+
+    .breadcrumb-item {
+        max-width: 150px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+}
+
+/* ===== ALERTS & NOTIFICATIONS ===== */
+@media (max-width: 768px) {
+    .alert {
+        padding: 12px !important;
+        font-size: 14px !important;
+    }
+
+    .notification {
+        max-width: 100% !important;
+        margin: 10px !important;
+    }
+}
+
+/* ===== PAGINATION ===== */
+@media (max-width: 768px) {
+    .pagination {
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+    }
+
+    .page-link {
+        padding: 8px 12px !important;
+        font-size: 13px !important;
+        min-width: 40px !important;
+    }
+
+    /* Hide page numbers in the middle on mobile, keep first, last, prev, next */
+    .pagination .page-item:not(:first-child):not(:last-child):not(.active) {
+        display: none !important;
+    }
+
+    .pagination .page-item.active {
+        display: inline-block !important;
+    }
+}
+
+/* ===== STATUS BADGES ===== */
+@media (max-width: 768px) {
+    .status,
+    .badge {
+        font-size: 11px !important;
+        padding: 4px 8px !important;
+    }
+}
+
+/* ===== FOOTER ===== */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 20px 15px !important;
+        font-size: 13px !important;
+    }
+
+    .footer-content {
+        flex-direction: column !important;
+        gap: 15px !important;
+        text-align: center !important;
+    }
+
+    .footer-text {
+        order: 2 !important;
+    }
+
+    .footer-text p {
+        font-size: 12px !important;
+        line-height: 1.5 !important;
+    }
+
+    .footer-nav {
+        order: 1 !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    .footer-nav a {
+        padding: 8px 12px !important;
+        font-size: 13px !important;
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .footer-nav .separator {
+        display: none !important;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        text-align: center !important;
+    }
+
+    .footer-links {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-footer {
+        padding: 15px 10px !important;
+    }
+
+    .footer-nav {
+        gap: 5px !important;
+    }
+
+    .footer-nav a {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+    }
+
+    .footer-text p {
+        font-size: 11px !important;
+    }
+}
+
+/* ===== SMALL MOBILE (< 480px) ===== */
+@media (max-width: 480px) {
+    /* Further reduce padding */
+    .container {
+        padding: 0 10px !important;
+    }
+
+    /* Smaller fonts */
+    body {
+        font-size: 13px !important;
+    }
+
+    h1 {
+        font-size: 1.5rem !important;
+    }
+
+    h2 {
+        font-size: 1.25rem !important;
+    }
+
+    h3 {
+        font-size: 1.1rem !important;
+    }
+
+    /* Smaller buttons */
+    .btn {
+        padding: 10px 15px !important;
+        font-size: 14px !important;
+    }
+
+    /* Adjust card padding */
+    .card {
+        padding: 12px !important;
+    }
+
+    /* Make inputs larger for better touch targets */
+    input,
+    select,
+    textarea,
+    button {
+        min-height: 44px !important; /* Apple's recommended touch target size */
+    }
+}
+
+/* ===== TOUCH IMPROVEMENTS ===== */
+@media (hover: none) and (pointer: coarse) {
+    /* Increase all touch targets */
+    a,
+    button,
+    input,
+    select,
+    textarea {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+
+    /* Remove hover effects on touch devices */
+    .hover-effect:hover {
+        transform: none !important;
+    }
+
+    /* Larger tap areas for links in text */
+    p a,
+    li a {
+        padding: 2px 0 !important;
+        display: inline-block !important;
+    }
+}
+
+/* ===== LANDSCAPE MODE (Mobile) ===== */
+@media (max-width: 900px) and (orientation: landscape) {
+    .modal-body {
+        max-height: 50vh !important;
+    }
+
+    .home-container {
+        min-height: auto !important;
+        padding: 20px !important;
+    }
+
+    .pdf-main {
+        height: 70vh !important;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (max-width: 768px) {
+    /* Ensure focus indicators are visible */
+    *:focus {
+        outline: 2px solid #7b3f00 !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Skip to content link for screen readers */
+    .skip-to-content {
+        position: absolute !important;
+        top: -40px !important;
+        left: 0 !important;
+        background: #7b3f00 !important;
+        color: white !important;
+        padding: 8px !important;
+        z-index: 100 !important;
+    }
+
+    .skip-to-content:focus {
+        top: 0 !important;
+    }
+}
+
+/* ===== LOADING STATES ===== */
+@media (max-width: 768px) {
+    .loading-spinner {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .loading-overlay {
+        padding: 20px !important;
+    }
+}
+
+/* ===== PREVENT TEXT SIZE ADJUSTMENT ===== */
+@media (max-width: 768px) {
+    html {
+        -webkit-text-size-adjust: 100% !important;
+        -moz-text-size-adjust: 100% !important;
+        -ms-text-size-adjust: 100% !important;
+        text-size-adjust: 100% !important;
+    }
+}
+
+/* ===== SAFE AREA (for notched devices like iPhone X+) ===== */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: max(0px, env(safe-area-inset-left)) !important;
+        padding-right: max(0px, env(safe-area-inset-right)) !important;
+    }
+
+    .site-header {
+        padding-left: max(15px, env(safe-area-inset-left)) !important;
+        padding-right: max(15px, env(safe-area-inset-right)) !important;
+    }
+}
+
+/* ===== ABOUT PAGE ===== */
+@media (max-width: 768px) {
+    .about-container,
+    .about-page {
+        padding: 20px 15px !important;
+    }
+
+    .about-header {
+        margin-bottom: 20px !important;
+    }
+
+    .about-title {
+        font-size: 1.75rem !important;
+        margin-bottom: 15px !important;
+    }
+
+    .about-content {
+        padding: 20px 15px !important;
+    }
+
+    .about-section {
+        margin-bottom: 25px !important;
+    }
+
+    .about-section h2 {
+        font-size: 1.3rem !important;
+        margin-bottom: 12px !important;
+    }
+
+    .about-section p {
+        font-size: 14px !important;
+        line-height: 1.6 !important;
+    }
+
+    .team-grid,
+    .features-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .team-member,
+    .feature-card {
+        padding: 15px !important;
+    }
+}
+
+/* ===== THESIS CREATE/UPLOAD PAGE ===== */
+@media (max-width: 768px) {
+    .upload-container,
+    .create-thesis-container {
+        padding: 20px 15px !important;
+    }
+
+    .upload-form,
+    .thesis-form {
+        padding: 20px 15px !important;
+    }
+
+    .form-section {
+        margin-bottom: 20px !important;
+    }
+
+    .file-upload-zone {
+        padding: 40px 20px !important;
+        min-height: 200px !important;
+    }
+
+    .file-upload-text {
+        font-size: 14px !important;
+    }
+
+    .file-preview {
+        padding: 12px !important;
+        font-size: 13px !important;
+    }
+
+    .authors-list {
+        gap: 10px !important;
+    }
+
+    .author-item {
+        padding: 10px !important;
+        font-size: 13px !important;
+    }
+}
+
+/* ===== THESIS LIST/MY SUBMISSIONS ===== */
+@media (max-width: 768px) {
+    .thesis-list-container {
+        padding: 20px 15px !important;
+    }
+
+    .thesis-list-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 15px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .thesis-list-actions {
+        width: 100% !important;
+        flex-direction: column !important;
+    }
+
+    .thesis-list-actions .btn {
+        width: 100% !important;
+    }
+
+    .thesis-list-item {
+        padding: 15px !important;
+        flex-direction: column !important;
+    }
+
+    .thesis-list-info {
+        margin-bottom: 12px !important;
+    }
+
+    .thesis-list-meta {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+}
+
+/* ===== ADMIN USERS PAGE ===== */
+@media (max-width: 768px) {
+    .users-container {
+        padding: 20px 15px !important;
+    }
+
+    .users-header {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    .user-filters {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .user-filter {
+        width: 100% !important;
+    }
+
+    .users-table-wrapper {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .user-card {
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+    }
+
+    .user-actions {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .user-actions .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}
+
+/* ===== ADMIN REPORTS PAGE ===== */
+@media (max-width: 768px) {
+    .reports-container {
+        padding: 20px 15px !important;
+    }
+
+    .report-filters {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    .report-card {
+        padding: 15px !important;
+    }
+
+    .report-chart {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .report-export-buttons {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .report-export-buttons .btn {
+        width: 100% !important;
+    }
+}
+
+/* ===== BOOKMARKS PAGE ===== */
+@media (max-width: 768px) {
+    .bookmarks-container {
+        padding: 20px 15px !important;
+    }
+
+    .bookmark-item {
+        padding: 15px !important;
+        flex-direction: column !important;
+    }
+
+    .bookmark-actions {
+        width: 100% !important;
+        justify-content: space-between !important;
+        margin-top: 12px !important;
+    }
+}
+
+/* ===== IMAGE AND MEDIA RESPONSIVE ===== */
+@media (max-width: 768px) {
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    iframe {
+        max-width: 100% !important;
+    }
+
+    video {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Prevent images from breaking layout */
+    .thesis-image,
+    .cover-image,
+    .thumbnail {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: cover !important;
+    }
+}
+
+/* ===== HORIZONTAL SCROLL FIX ===== */
+@media (max-width: 768px) {
+    /* Prevent all elements from causing horizontal scroll */
+    * {
+        max-width: 100vw !important;
+    }
+
+    /* Allow specific elements to overflow properly */
+    .table-responsive,
+    .table-wrapper,
+    .chart-container,
+    pre,
+    code {
+        max-width: 100% !important;
+        overflow-x: auto !important;
+    }
+
+    /* Ensure text doesn't overflow */
+    p, h1, h2, h3, h4, h5, h6, span, div {
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* URLs and long strings */
+    a, .url, .long-text {
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+}
+
+/* ===== ENSURE FULL-WIDTH CONTAINERS ===== */
+@media (max-width: 768px) {
+    .main-container,
+    .page-container,
+    .content-wrapper {
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding: 0 10px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Override any fixed widths */
+    [style*="width"] {
+        max-width: 100% !important;
+    }
+}
+
+/* ===== FIXED POSITION ELEMENTS ===== */
+@media (max-width: 768px) {
+    .fixed-bottom,
+    .fixed-top {
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+    }
+
+    .sticky-top {
+        position: relative !important;
+    }
+}
+
+/* ===== IMPROVE READABILITY ===== */
+@media (max-width: 768px) {
+    /* Better line height for reading on mobile */
+    p, li, td, th {
+        line-height: 1.6 !important;
+    }
+
+    /* Better spacing for lists */
+    ul, ol {
+        padding-left: 25px !important;
+    }
+
+    li {
+        margin-bottom: 8px !important;
+    }
+
+    /* Better heading spacing */
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 20px !important;
+        margin-bottom: 12px !important;
+    }
+
+    h1:first-child,
+    h2:first-child,
+    h3:first-child {
+        margin-top: 0 !important;
+    }
+}
+
+/* ===== SMOOTH SCROLLING ===== */
+@media (max-width: 768px) {
+    html {
+        scroll-behavior: smooth !important;
+    }
+
+    /* Better scroll for overflow containers */
+    .overflow-auto,
+    .overflow-scroll {
+        -webkit-overflow-scrolling: touch !important;
+    }
+}
+
+/* ===== CRITICAL: FIX ANY VIEWPORT ISSUES ===== */
+@media (max-width: 768px) {
+    html, body {
+        width: 100vw !important;
+        overflow-x: hidden !important;
+        position: relative !important;
+    }
+
+    body {
+        min-width: 320px !important;
+    }
+}

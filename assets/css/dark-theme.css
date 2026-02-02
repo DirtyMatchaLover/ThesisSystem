@@ -1,0 +1,1526 @@
+/* ----------------------------
+   Dark Theme Overrides
+   This file applies CSS variables to all components for theme support
+----------------------------- */
+
+/* Header & Navigation */
+.site-header {
+    background: var(--header-bg);
+    border-bottom-color: var(--border-primary);
+}
+
+.college-name,
+.thesis-flow,
+.nav-link,
+.dropdown-trigger {
+    color: var(--header-text) !important;
+}
+
+.nav-link:hover,
+.dropdown-trigger:hover {
+    color: var(--accent-tertiary) !important;
+}
+
+.nav-link.active {
+    color: var(--accent-tertiary) !important;
+}
+
+.separator {
+    color: var(--accent-quaternary);
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+    background: var(--bg-secondary);
+    border-color: var(--border-secondary);
+}
+
+.dropdown-item {
+    color: var(--text-secondary);
+    border-bottom-color: var(--border-secondary);
+}
+
+.dropdown-item:hover {
+    color: var(--accent-primary) !important;
+}
+
+.dropdown-header {
+    background: rgba(212, 165, 116, 0.1);
+    border-bottom-color: var(--border-secondary);
+}
+
+.user-info strong,
+.user-info small {
+    color: var(--text-secondary);
+}
+
+.user-email {
+    color: var(--accent-quaternary) !important;
+}
+
+.dropdown-divider {
+    background-color: var(--border-secondary);
+}
+
+/* Login Button */
+.login-btn {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    color: var(--header-text) !important;
+    border-color: var(--border-secondary);
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+    background: var(--bg-secondary);
+}
+
+.mobile-nav-header {
+    background: var(--header-bg);
+    color: var(--header-text);
+    border-bottom-color: var(--border-primary);
+}
+
+.mobile-nav-close {
+    color: var(--header-text);
+}
+
+.mobile-nav-item {
+    color: var(--text-secondary);
+    border-bottom-color: var(--border-secondary);
+}
+
+.mobile-nav-item:hover {
+    color: var(--accent-primary) !important;
+}
+
+.mobile-nav-user {
+    border-color: var(--border-secondary);
+}
+
+.mobile-nav-user strong,
+.mobile-nav-user small {
+    color: var(--text-secondary);
+}
+
+/* Homepage Styles */
+.page-title {
+    color: var(--text-secondary);
+    border-bottom-color: var(--border-primary);
+}
+
+.home-container {
+    border-color: var(--border-primary);
+}
+
+.home-container::before {
+    background: var(--overlay-bg);
+}
+
+/* Statistics Summary */
+.stats-summary {
+    background: linear-gradient(135deg, rgba(212, 165, 116, 0.15) 0%, rgba(139, 111, 71, 0.1) 100%);
+    border-color: var(--border-primary);
+}
+
+.stat-number {
+    color: var(--accent-primary);
+}
+
+.stat-label {
+    color: var(--text-secondary);
+}
+
+.stat-divider {
+    color: var(--accent-quaternary);
+}
+
+/* Thesis Cards */
+.home-container .thesis-card {
+    background: var(--card-bg) !important;
+    border-color: var(--card-border) !important;
+    box-shadow: 0 5px 15px var(--shadow-color), inset 0 0 0 1px rgba(139, 69, 19, 0.1) !important;
+}
+
+.home-container .thesis-card::before {
+    border-color: rgba(212, 165, 116, 0.3);
+}
+
+.home-container .thesis-card::after {
+    color: var(--accent-tertiary);
+}
+
+.home-container .thesis-content {
+    background: linear-gradient(to bottom,
+        rgba(26, 22, 20, 0.5),
+        rgba(44, 36, 22, 0.5)) !important;
+}
+
+body.dark-theme .home-container .thesis-content {
+    background: linear-gradient(to bottom,
+        rgba(44, 36, 22, 0.6),
+        rgba(61, 40, 23, 0.6)) !important;
+}
+
+.home-container .thesis-title {
+    color: var(--text-secondary) !important;
+    border-bottom-color: var(--border-primary) !important;
+}
+
+.home-container .thesis-meta {
+    border-top-color: rgba(212, 165, 116, 0.2) !important;
+    border-bottom-color: rgba(212, 165, 116, 0.2) !important;
+    background: rgba(212, 165, 116, 0.05) !important;
+}
+
+.home-container .thesis-author,
+.home-container .thesis-date,
+.home-container .thesis-views,
+.home-container .thesis-downloads {
+    color: var(--text-tertiary) !important;
+}
+
+.home-container .thesis-author strong,
+.home-container .thesis-date strong,
+.home-container .thesis-views strong,
+.home-container .thesis-downloads strong {
+    color: var(--accent-primary) !important;
+}
+
+.home-container .thesis-abstract {
+    color: var(--text-tertiary) !important;
+    border-left-color: var(--border-primary) !important;
+}
+
+.home-container .thesis-abstract strong {
+    color: var(--accent-primary) !important;
+}
+
+.home-container .play-button {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%) !important;
+    color: var(--header-text) !important;
+    border-color: var(--border-secondary) !important;
+}
+
+/* View More Button */
+.btn-view-more {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    color: var(--header-text);
+    border-color: var(--border-secondary);
+}
+
+.btn-view-more:hover {
+    color: var(--header-text);
+}
+
+/* Empty State */
+.empty-state {
+    color: var(--text-secondary);
+    background: linear-gradient(135deg, rgba(212, 165, 116, 0.08) 0%, rgba(139, 111, 71, 0.04) 100%);
+    border-color: var(--border-secondary);
+}
+
+.empty-title {
+    color: var(--accent-primary);
+}
+
+.empty-description {
+    color: var(--text-primary);
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, var(--text-secondary) 0%, var(--accent-secondary) 100%);
+    color: var(--header-text);
+    border-color: var(--border-primary);
+}
+
+.cta-content h3 {
+    color: var(--accent-tertiary);
+}
+
+.cta-buttons .btn-primary {
+    background: linear-gradient(135deg, var(--accent-tertiary) 0%, var(--accent-quaternary) 100%);
+    color: var(--text-secondary);
+    border-color: var(--border-secondary);
+}
+
+.cta-buttons .btn-primary:hover {
+    color: var(--text-secondary);
+}
+
+.cta-buttons .btn-secondary {
+    color: var(--header-text);
+    border-color: var(--border-secondary);
+}
+
+.cta-buttons .btn-secondary:hover {
+    color: var(--header-text);
+    border-color: var(--border-secondary);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: transparent;
+    border: 2px solid var(--border-secondary);
+    color: var(--header-text);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: 'Georgia', serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.theme-toggle:hover {
+    background: rgba(212, 165, 116, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(123, 63, 0, 0.3);
+}
+
+body.dark-theme .theme-toggle:hover {
+    background: rgba(255, 167, 38, 0.15);
+    box-shadow: 0 4px 20px rgba(255, 167, 38, 0.3);
+    border-color: var(--accent-primary);
+}
+
+.theme-toggle i {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover i {
+    transform: rotate(20deg);
+}
+
+body.dark-theme .theme-toggle:hover i {
+    transform: rotate(360deg);
+    filter: drop-shadow(0 0 8px rgba(255, 167, 38, 0.6));
+}
+
+/* Dark theme specific adjustments */
+body.dark-theme .dropdown-arrow {
+    background: rgba(212, 165, 116, 0.3) !important;
+    color: var(--accent-tertiary) !important;
+    border-color: rgba(212, 165, 116, 0.5) !important;
+}
+
+body.dark-theme .nav-dropdown:hover .dropdown-arrow {
+    background: rgba(212, 165, 116, 0.6) !important;
+    color: var(--text-secondary) !important;
+}
+
+body.dark-theme .mobile-menu-toggle span {
+    background-color: var(--accent-tertiary);
+}
+
+/* Smooth transitions for theme switching */
+* {
+    transition: background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Preserve specific transitions that shouldn't be affected */
+.nav-link,
+.dropdown-item,
+.play-button,
+.btn,
+.thesis-card {
+    transition: all 0.3s ease !important;
+}
+
+/* ========================================
+   ENHANCED DARK THEME VISUAL EFFECTS
+======================================== */
+
+/* Glowing borders and enhanced shadows for cards in dark mode */
+body.dark-theme .home-container .thesis-card {
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 167, 38, 0.1),
+        inset 0 1px 0 rgba(255, 167, 38, 0.1) !important;
+}
+
+body.dark-theme .home-container .thesis-card:hover {
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(255, 167, 38, 0.2),
+        0 0 0 2px rgba(255, 167, 38, 0.3),
+        inset 0 1px 0 rgba(255, 167, 38, 0.2) !important;
+    transform: translateY(-10px) scale(1.03) !important;
+    border-color: var(--accent-primary) !important;
+}
+
+/* Enhanced header with subtle glow */
+body.dark-theme .site-header {
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.5),
+        0 2px 4px rgba(255, 167, 38, 0.05);
+}
+
+/* Glowing active nav links */
+body.dark-theme .nav-link.active {
+    box-shadow: 0 0 15px rgba(255, 167, 38, 0.3);
+    background-color: rgba(255, 167, 38, 0.15) !important;
+}
+
+body.dark-theme .nav-link:hover {
+    box-shadow: 0 0 10px rgba(255, 167, 38, 0.2);
+}
+
+/* Enhanced buttons with glow effect */
+body.dark-theme .home-container .play-button {
+    box-shadow:
+        0 4px 15px rgba(255, 167, 38, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dark-theme .home-container .play-button:hover {
+    box-shadow:
+        0 6px 25px rgba(255, 167, 38, 0.5),
+        0 0 20px rgba(255, 167, 38, 0.3),
+        0 4px 12px rgba(0, 0, 0, 0.5) !important;
+    filter: brightness(1.1);
+}
+
+body.dark-theme .btn-view-more {
+    box-shadow:
+        0 4px 15px rgba(255, 167, 38, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-theme .btn-view-more:hover {
+    box-shadow:
+        0 8px 30px rgba(255, 167, 38, 0.5),
+        0 0 20px rgba(255, 167, 38, 0.3);
+}
+
+/* Login button enhancement */
+body.dark-theme .login-btn {
+    box-shadow: 0 2px 10px rgba(255, 167, 38, 0.2);
+}
+
+body.dark-theme .login-btn:hover {
+    box-shadow:
+        0 4px 20px rgba(255, 167, 38, 0.4),
+        0 0 15px rgba(255, 167, 38, 0.2) !important;
+}
+
+/* Enhanced stats summary */
+body.dark-theme .stats-summary {
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 167, 38, 0.1);
+}
+
+body.dark-theme .stat-number {
+    text-shadow: 0 0 20px rgba(255, 167, 38, 0.3);
+}
+
+/* Page title with glow */
+body.dark-theme .page-title {
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(255, 167, 38, 0.2);
+    box-shadow: 0 4px 0 var(--border-primary);
+}
+
+/* Dropdown menu enhancement */
+body.dark-theme .dropdown-menu {
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 167, 38, 0.2),
+        0 0 20px rgba(255, 167, 38, 0.1);
+}
+
+body.dark-theme .dropdown-item:hover {
+    box-shadow: inset 4px 0 0 var(--accent-primary);
+}
+
+/* Footer enhancement */
+body.dark-theme .site-footer {
+    box-shadow:
+        0 -2px 20px rgba(0, 0, 0, 0.5),
+        inset 0 2px 0 rgba(255, 167, 38, 0.1);
+}
+
+body.dark-theme .footer-nav a:hover {
+    text-shadow: 0 0 10px rgba(255, 167, 38, 0.5);
+}
+
+/* Subtle animation for thesis cards in dark mode */
+@keyframes darkCardFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+}
+
+body.dark-theme .home-container .thesis-card {
+    animation: none;
+}
+
+body.dark-theme .home-container .thesis-card:hover {
+    animation: darkCardFloat 2s ease-in-out infinite;
+}
+
+/* Enhanced CTA section in dark mode */
+body.dark-theme .cta-section {
+    box-shadow:
+        0 8px 35px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 167, 38, 0.1),
+        0 0 0 1px rgba(255, 167, 38, 0.2);
+}
+
+/* Scrollbar styling for dark theme */
+body.dark-theme ::-webkit-scrollbar {
+    width: 12px;
+    background: var(--bg-primary);
+}
+
+body.dark-theme ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 10px;
+    border: 2px solid var(--bg-secondary);
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--accent-secondary), var(--accent-tertiary));
+    box-shadow: 0 0 10px rgba(255, 167, 38, 0.5);
+}
+
+/* Selection color in dark theme */
+body.dark-theme ::selection {
+    background: rgba(255, 167, 38, 0.3);
+    color: var(--text-primary);
+}
+
+body.dark-theme ::-moz-selection {
+    background: rgba(255, 167, 38, 0.3);
+    color: var(--text-primary);
+}
+
+/* ========================================
+   COMPREHENSIVE WHITE BOX ELIMINATION
+   Catch-all rules to ensure NO white boxes in dark mode
+======================================== */
+
+/* Any element with white or light background */
+body.dark-theme [style*="background: white"],
+body.dark-theme [style*="background: #fff"],
+body.dark-theme [style*="background-color: white"],
+body.dark-theme [style*="background-color: #fff"],
+body.dark-theme [style*="background-color: #ffffff"] {
+    background: var(--bg-secondary) !important;
+}
+
+/* Common classes that might have white backgrounds */
+body.dark-theme .bg-white,
+body.dark-theme .background-white {
+    background: var(--bg-secondary) !important;
+}
+
+/* All section elements */
+body.dark-theme section {
+    background: transparent;
+}
+
+body.dark-theme section > div,
+body.dark-theme section > .container {
+    background: rgba(26, 20, 16, 0.95);
+}
+
+/* All divs with white or light gray backgrounds */
+body.dark-theme div[style*="background:#fff"],
+body.dark-theme div[style*="background: #fff"],
+body.dark-theme div[style*="background:#ffffff"],
+body.dark-theme div[style*="background: white"] {
+    background: var(--bg-secondary) !important;
+}
+
+/* Specific page containers */
+body.dark-theme .about-content,
+body.dark-theme .thesis-form-container,
+body.dark-theme .upload-container,
+body.dark-theme .form-container,
+body.dark-theme .content-box,
+body.dark-theme .content-wrapper {
+    background: transparent !important;
+}
+
+/* Research page specific */
+body.dark-theme .research-page,
+body.dark-theme .search-container,
+body.dark-theme .results-container {
+    background: transparent !important;
+}
+
+/* Ensure all Bootstrap and generic containers are themed */
+body.dark-theme .container,
+body.dark-theme .container-fluid,
+body.dark-theme .row,
+body.dark-theme .col,
+body.dark-theme [class*="col-"] {
+    background: transparent;
+}
+
+/* Paper/document like containers */
+body.dark-theme .paper,
+body.dark-theme .document,
+body.dark-theme .panel,
+body.dark-theme .box {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Description and text blocks */
+body.dark-theme .description,
+body.dark-theme .about-description,
+body.dark-theme p {
+    color: var(--text-primary) !important;
+}
+
+/* Ensure proper text color everywhere */
+body.dark-theme * {
+    border-color: var(--border-secondary);
+}
+
+/* Override any hardcoded light backgrounds */
+body.dark-theme {
+    color: var(--text-primary);
+}
+
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme h4,
+body.dark-theme h5,
+body.dark-theme h6 {
+    color: var(--text-secondary) !important;
+}
+
+/* Textareas and contenteditable */
+body.dark-theme textarea,
+body.dark-theme [contenteditable="true"] {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-secondary) !important;
+}
+
+/* Tables */
+body.dark-theme table {
+    background: transparent;
+    color: var(--text-primary);
+}
+
+body.dark-theme th,
+body.dark-theme td {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-secondary);
+}
+
+body.dark-theme thead th {
+    background: var(--bg-tertiary);
+}
+
+/* Lists */
+body.dark-theme ul,
+body.dark-theme ol {
+    color: var(--text-primary);
+}
+
+/* Links */
+body.dark-theme a {
+    color: var(--accent-primary);
+}
+
+body.dark-theme a:hover {
+    color: var(--accent-secondary);
+}
+
+/* Pre and code blocks */
+body.dark-theme pre,
+body.dark-theme code {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-secondary);
+}
+
+/* Blockquotes */
+body.dark-theme blockquote {
+    background: var(--bg-tertiary);
+    border-left: 4px solid var(--accent-primary);
+    color: var(--text-primary);
+}
+
+/* HR lines */
+body.dark-theme hr {
+    border-color: var(--border-secondary);
+    background: var(--border-secondary);
+}
+
+/* ========================================
+   BROWSE PAPERS PAGE SPECIFIC
+======================================== */
+
+body.dark-theme .search-section-container,
+body.dark-theme .search-box,
+body.dark-theme .filters-section,
+body.dark-theme .filters-container,
+body.dark-theme .filter-section {
+    background: rgba(26, 20, 16, 0.95) !important;
+    border: 2px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 167, 38, 0.2);
+}
+
+body.dark-theme .help-text,
+body.dark-theme .field-hint {
+    color: var(--text-tertiary) !important;
+    opacity: 0.8;
+}
+
+body.dark-theme .filter-heading {
+    color: var(--text-secondary) !important;
+}
+
+body.dark-theme .form-select,
+body.dark-theme .form-input,
+body.dark-theme .search-input {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border-secondary) !important;
+}
+
+body.dark-theme .form-select:focus,
+body.dark-theme .form-input:focus,
+body.dark-theme .search-input:focus {
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.2) !important;
+}
+
+body.dark-theme .search-btn,
+body.dark-theme .toggle-filters {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+body.dark-theme .search-btn:hover,
+body.dark-theme .toggle-filters:hover {
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-tertiary) 100%) !important;
+    box-shadow: 0 5px 20px rgba(255, 167, 38, 0.6) !important;
+}
+
+body.dark-theme .filter-row {
+    gap: 20px;
+}
+
+/* ========================================
+   UPLOAD THESIS PAGE SPECIFIC
+======================================== */
+
+body.dark-theme .upload-thesis-container {
+    background: transparent !important;
+    padding: 40px 20px;
+}
+
+body.dark-theme .upload-header {
+    background: rgba(26, 20, 16, 0.95) !important;
+    border: 2px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 40px;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 167, 38, 0.2);
+}
+
+body.dark-theme .upload-title {
+    color: var(--text-secondary) !important;
+}
+
+body.dark-theme .upload-subtitle {
+    color: var(--text-tertiary) !important;
+}
+
+body.dark-theme .upload-form {
+    background: rgba(26, 20, 16, 0.95) !important;
+    border: 2px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 167, 38, 0.2);
+}
+
+body.dark-theme .form-step {
+    background: transparent !important;
+}
+
+body.dark-theme .step-title {
+    color: var(--text-secondary) !important;
+    border-bottom: 2px solid var(--border-primary);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+body.dark-theme .form-progress {
+    background: var(--bg-tertiary) !important;
+    border: 1px solid var(--border-secondary);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+body.dark-theme .progress-step {
+    color: var(--text-tertiary);
+}
+
+body.dark-theme .progress-step.active {
+    color: var(--accent-primary) !important;
+}
+
+body.dark-theme .progress-step.active .step-number {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%) !important;
+    color: white !important;
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 20px rgba(255, 167, 38, 0.5);
+}
+
+body.dark-theme .step-number {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-secondary);
+    color: var(--text-tertiary);
+}
+
+body.dark-theme .progress-line {
+    background: var(--border-secondary);
+}
+
+body.dark-theme .form-hint {
+    color: var(--text-tertiary) !important;
+}
+
+body.dark-theme .hint-icon {
+    color: var(--accent-primary);
+}
+
+body.dark-theme .char-counter {
+    color: var(--text-tertiary) !important;
+}
+
+body.dark-theme .form-textarea {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border-secondary) !important;
+    min-height: 150px;
+}
+
+body.dark-theme .form-textarea:focus {
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.2) !important;
+}
+
+body.dark-theme .form-row {
+    gap: 20px;
+}
+
+body.dark-theme .form-actions {
+    background: transparent;
+    padding-top: 20px;
+    border-top: 2px solid var(--border-secondary);
+}
+
+body.dark-theme .btn-next,
+body.dark-theme .btn-prev,
+body.dark-theme .btn-submit {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+body.dark-theme .btn-next:hover,
+body.dark-theme .btn-prev:hover,
+body.dark-theme .btn-submit:hover {
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-tertiary) 100%) !important;
+    box-shadow: 0 5px 20px rgba(255, 167, 38, 0.6) !important;
+}
+
+body.dark-theme .required {
+    color: #ff6b6b !important;
+}
+
+/* File upload specific */
+body.dark-theme input[type="file"] {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 2px dashed var(--border-secondary) !important;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+body.dark-theme input[type="file"]:hover {
+    border-color: var(--accent-primary) !important;
+    background: var(--bg-secondary) !important;
+}
+
+/* Alert boxes */
+body.dark-theme .alert {
+    background: var(--bg-tertiary) !important;
+    border: 2px solid var(--border-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+body.dark-theme .alert-success {
+    background: rgba(56, 142, 60, 0.2) !important;
+    border-color: #4caf50 !important;
+    color: #81c784 !important;
+}
+
+body.dark-theme .alert-error,
+body.dark-theme .alert-danger {
+    background: rgba(211, 47, 47, 0.2) !important;
+    border-color: #f44336 !important;
+    color: #ef9a9a !important;
+}
+
+body.dark-theme .alert-warning {
+    background: rgba(255, 152, 0, 0.2) !important;
+    border-color: #ff9800 !important;
+    color: #ffb74d !important;
+}
+
+body.dark-theme .alert-info {
+    background: rgba(33, 150, 243, 0.2) !important;
+    border-color: #2196f3 !important;
+    color: #64b5f6 !important;
+}
+
+body.dark-theme .alert-icon {
+    filter: brightness(1.3);
+}
+
+body.dark-theme .alert-content strong {
+    color: var(--text-secondary) !important;
+}
+
+/* ========================================
+   THESIS LIST PAGE SPECIFIC
+======================================== */
+
+body.dark-theme .section-title {
+    color: var(--text-secondary) !important;
+}
+
+body.dark-theme .table-wrap {
+    background: transparent;
+    overflow-x: auto;
+}
+
+body.dark-theme table,
+body.dark-theme .table {
+    background: transparent !important;
+    border-collapse: collapse;
+}
+
+body.dark-theme table thead tr,
+body.dark-theme .table thead tr {
+    background: var(--bg-tertiary) !important;
+}
+
+body.dark-theme table th,
+body.dark-theme .table th {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-secondary) !important;
+    border-bottom: 2px solid var(--border-primary) !important;
+    padding: 12px;
+}
+
+body.dark-theme table td,
+body.dark-theme .table td {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-secondary) !important;
+    padding: 12px;
+}
+
+body.dark-theme table tbody tr:hover,
+body.dark-theme .table tbody tr:hover {
+    background: var(--bg-tertiary) !important;
+}
+
+body.dark-theme .card.empty {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border-primary);
+    padding: 20px;
+}
+
+body.dark-theme .badge {
+    color: white !important;
+}
+
+body.dark-theme .btn-light {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-secondary) !important;
+}
+
+body.dark-theme .btn-light:hover {
+    background: var(--bg-secondary) !important;
+    border-color: var(--accent-primary) !important;
+}
+
+/* ========================================
+   PROFILE PAGE SPECIFIC
+======================================== */
+
+body.dark-theme .profile-container {
+    background: rgba(26, 20, 16, 0.95) !important;
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 167, 38, 0.2) !important;
+}
+
+body.dark-theme .profile-header {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) !important;
+}
+
+/* ========================================
+   STRAND-SPECIFIC HEADER COLORS
+======================================== */
+
+/* STEM - Yellow/Gold (Default) */
+body.dark-theme .profile-header[data-strand="STEM"],
+body.dark-theme .profile-header.strand-stem {
+    background: linear-gradient(135deg, #ffa726, #ffb74d) !important;
+}
+
+/* ABM - Blue */
+body.dark-theme .profile-header[data-strand="ABM"],
+body.dark-theme .profile-header.strand-abm {
+    background: linear-gradient(135deg, #2196f3, #42a5f5) !important;
+}
+
+/* HUMSS - Green */
+body.dark-theme .profile-header[data-strand="HUMSS"],
+body.dark-theme .profile-header.strand-humss {
+    background: linear-gradient(135deg, #4caf50, #66bb6a) !important;
+}
+
+/* TVL-HE & TVL-ICT - Purple */
+body.dark-theme .profile-header[data-strand="TVL-HE"],
+body.dark-theme .profile-header[data-strand="TVL-ICT"],
+body.dark-theme .profile-header.strand-tvl {
+    background: linear-gradient(135deg, #9c27b0, #ab47bc) !important;
+}
+
+/* ADT - Pink/Magenta */
+body.dark-theme .profile-header[data-strand="ADT"],
+body.dark-theme .profile-header.strand-adt {
+    background: linear-gradient(135deg, #e91e63, #ec407a) !important;
+}
+
+/* Light theme strand colors */
+.profile-header[data-strand="STEM"],
+.profile-header.strand-stem {
+    background: linear-gradient(135deg, #ff9800, #ffa726) !important;
+}
+
+.profile-header[data-strand="ABM"],
+.profile-header.strand-abm {
+    background: linear-gradient(135deg, #1976d2, #2196f3) !important;
+}
+
+.profile-header[data-strand="HUMSS"],
+.profile-header.strand-humss {
+    background: linear-gradient(135deg, #388e3c, #4caf50) !important;
+}
+
+.profile-header[data-strand="TVL-HE"],
+.profile-header[data-strand="TVL-ICT"],
+.profile-header.strand-tvl {
+    background: linear-gradient(135deg, #7b1fa2, #9c27b0) !important;
+}
+
+.profile-header[data-strand="ADT"],
+.profile-header.strand-adt {
+    background: linear-gradient(135deg, #c2185b, #e91e63) !important;
+}
+
+body.dark-theme .profile-avatar {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+body.dark-theme .settings-tabs {
+    background: var(--bg-tertiary) !important;
+    border-bottom-color: var(--border-secondary) !important;
+}
+
+body.dark-theme .tab-button {
+    background: transparent !important;
+    color: var(--text-tertiary) !important;
+}
+
+body.dark-theme .tab-button:hover {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+body.dark-theme .tab-button.active {
+    background: transparent !important;
+    color: var(--accent-primary) !important;
+    border-bottom-color: var(--accent-primary) !important;
+}
+
+body.dark-theme .tab-content {
+    background: transparent !important;
+}
+
+body.dark-theme .settings-section h4 {
+    color: var(--text-secondary) !important;
+}
+
+body.dark-theme .form-group label {
+    color: var(--text-secondary) !important;
+}
+
+body.dark-theme .form-group input,
+body.dark-theme .form-group select {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-secondary) !important;
+}
+
+body.dark-theme .form-group input:focus,
+body.dark-theme .form-group select:focus {
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.2) !important;
+}
+
+body.dark-theme .readonly-field {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-tertiary) !important;
+    border-color: var(--border-secondary) !important;
+}
+
+body.dark-theme .field-note {
+    color: var(--text-tertiary) !important;
+}
+
+body.dark-theme .password-requirements {
+    background: var(--bg-tertiary) !important;
+    border: 1px solid var(--border-secondary);
+}
+
+body.dark-theme .password-requirements h5 {
+    color: var(--text-secondary) !important;
+}
+
+body.dark-theme .password-requirements ul {
+    color: var(--text-tertiary) !important;
+}
+
+body.dark-theme .btn-primary {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%) !important;
+    color: white !important;
+}
+
+body.dark-theme .btn-primary:hover {
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-tertiary) 100%) !important;
+    box-shadow: 0 5px 20px rgba(255, 167, 38, 0.6) !important;
+}
+
+body.dark-theme .btn-secondary {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-secondary) !important;
+}
+
+body.dark-theme .btn-secondary:hover {
+    background: var(--bg-secondary) !important;
+    border-color: var(--accent-primary) !important;
+}
+
+body.dark-theme .account-info {
+    background: var(--bg-tertiary) !important;
+}
+
+body.dark-theme .info-item {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-secondary) !important;
+}
+
+body.dark-theme .info-label {
+    color: var(--text-tertiary) !important;
+}
+
+body.dark-theme .info-value {
+    color: var(--text-primary) !important;
+}
+
+body.dark-theme .role-badge {
+    opacity: 0.9;
+}
+
+body.dark-theme .status-active {
+    color: #4caf50 !important;
+}
+
+body.dark-theme .student-info {
+    border-top-color: var(--border-secondary) !important;
+}
+
+body.dark-theme .student-info h5 {
+    color: var(--text-secondary) !important;
+}
+
+/* Override any remaining inline styles */
+body.dark-theme [style*="background: white"],
+body.dark-theme [style*="background: #fff"],
+body.dark-theme [style*="background-color: white"],
+body.dark-theme [style*="background-color: #fff"],
+body.dark-theme [style*="background: #f8f9fa"],
+body.dark-theme [style*="background-color: #f8f9fa"] {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+body.dark-theme [style*="background-color: #d4edda"] {
+    background: rgba(56, 142, 60, 0.2) !important;
+    color: #81c784 !important;
+}
+
+body.dark-theme [style*="background: #e9ecef"],
+body.dark-theme [style*="background-color: #e9ecef"] {
+    background: var(--bg-tertiary) !important;
+}
+
+body.dark-theme [style*="color: #333"] {
+    color: var(--text-primary) !important;
+}
+
+body.dark-theme [style*="color: #666"] {
+    color: var(--text-tertiary) !important;
+}
+
+body.dark-theme [style*="border: 1px solid #dee2e6"],
+body.dark-theme [style*="border-bottom: 1px solid #dee2e6"],
+body.dark-theme [style*="border-bottom: 2px solid #dee2e6"] {
+    border-color: var(--border-secondary) !important;
+}
+
+/* ========================================
+   MOBILE-SPECIFIC DARK THEME ENHANCEMENTS
+======================================== */
+@media (max-width: 768px) {
+    /* Enhanced Mobile Navigation Dark Theme */
+    body.dark-theme .mobile-nav {
+        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.9);
+    }
+
+    body.dark-theme .mobile-nav-overlay {
+        background: rgba(0, 0, 0, 0.85);
+    }
+
+    body.dark-theme .mobile-menu-toggle span {
+        box-shadow: 0 2px 6px rgba(255, 167, 38, 0.4);
+    }
+
+    /* Mobile Cards with Enhanced Touch Targets */
+    body.dark-theme .thesis-card,
+    body.dark-theme .research-card {
+        min-height: 280px !important;
+        border-width: 2px !important;
+        box-shadow:
+            0 4px 15px rgba(0, 0, 0, 0.7),
+            0 0 0 1px rgba(255, 167, 38, 0.15);
+    }
+
+    body.dark-theme .thesis-card:active,
+    body.dark-theme .research-card:active {
+        transform: scale(0.98);
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.8),
+            0 0 0 2px rgba(255, 167, 38, 0.3);
+    }
+
+    /* Mobile Forms - Larger Touch Targets */
+    body.dark-theme .form-control,
+    body.dark-theme .search-input,
+    body.dark-theme .filter-input,
+    body.dark-theme .filter-select {
+        min-height: 48px !important;
+        font-size: 16px !important;
+        padding: 14px !important;
+        border-width: 2px !important;
+    }
+
+    /* Mobile Buttons - Enhanced for Touch */
+    body.dark-theme .btn,
+    body.dark-theme .btn-primary,
+    body.dark-theme .btn-secondary {
+        min-height: 48px !important;
+        padding: 14px 20px !important;
+        font-size: 16px !important;
+        font-weight: 600;
+        box-shadow: 0 3px 10px rgba(255, 167, 38, 0.3);
+    }
+
+    body.dark-theme .btn-primary:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 5px rgba(255, 167, 38, 0.4);
+    }
+
+    /* Mobile Table Improvements */
+    body.dark-theme table {
+        font-size: 14px !important;
+    }
+
+    body.dark-theme table th,
+    body.dark-theme table td {
+        padding: 12px 8px !important;
+    }
+
+    /* Mobile Pagination */
+    body.dark-theme .page-link {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        padding: 12px !important;
+        font-size: 14px !important;
+    }
+
+    /* Mobile Search Section */
+    body.dark-theme .search-section-container {
+        padding: 20px 15px !important;
+        margin-bottom: 20px !important;
+    }
+
+    body.dark-theme .search-bar {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    body.dark-theme .search-btn {
+        width: 100% !important;
+        min-height: 48px !important;
+    }
+
+    /* Mobile Filters */
+    body.dark-theme .filters-container {
+        padding: 15px !important;
+    }
+
+    body.dark-theme .filter-row {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    /* Mobile Modals */
+    body.dark-theme .modal-content {
+        margin: 10px !important;
+        max-width: calc(100vw - 20px) !important;
+    }
+
+    body.dark-theme .modal-body {
+        padding: 20px 15px !important;
+        max-height: 70vh !important;
+    }
+
+    /* Mobile PDF Viewer */
+    body.dark-theme .pdf-viewer-wrapper {
+        height: 60vh !important;
+    }
+
+    body.dark-theme .pdf-controls {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        padding: 12px !important;
+    }
+
+    /* Mobile Stats Summary */
+    body.dark-theme .stats-summary {
+        flex-direction: column !important;
+        gap: 15px !important;
+        padding: 20px 15px !important;
+    }
+
+    body.dark-theme .stat-item {
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+    }
+
+    /* Mobile Dashboard Cards */
+    body.dark-theme .dashboard-stats,
+    body.dark-theme .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    /* Mobile Footer */
+    body.dark-theme .footer-nav {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+
+    body.dark-theme .footer-nav a {
+        min-height: 44px !important;
+        padding: 12px 16px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* Mobile Alerts */
+    body.dark-theme .alert {
+        padding: 15px !important;
+        font-size: 14px !important;
+        border-width: 2px !important;
+    }
+
+    /* Mobile Header Adjustments */
+    body.dark-theme .site-header {
+        padding: 12px 15px !important;
+    }
+
+    body.dark-theme .logo img {
+        height: 40px !important;
+        width: 40px !important;
+    }
+
+    body.dark-theme .college-name {
+        font-size: 16px !important;
+    }
+
+    body.dark-theme .thesis-flow {
+        font-size: 13px !important;
+    }
+}
+
+/* ===== TOUCH-SPECIFIC ENHANCEMENTS ===== */
+@media (hover: none) and (pointer: coarse) {
+    /* All touch targets minimum size */
+    body.dark-theme a,
+    body.dark-theme button,
+    body.dark-theme .btn,
+    body.dark-theme input,
+    body.dark-theme select,
+    body.dark-theme textarea {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+
+    /* Touch feedback animations */
+    body.dark-theme .btn:active,
+    body.dark-theme .nav-link:active,
+    body.dark-theme .mobile-nav-item:active {
+        transform: scale(0.97);
+        transition: transform 0.1s;
+    }
+
+    /* Remove hover effects on touch devices */
+    body.dark-theme .thesis-card:hover {
+        transform: none !important;
+    }
+
+    /* Enhanced focus indicators for accessibility */
+    body.dark-theme *:focus {
+        outline: 3px solid var(--accent-primary) !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Larger tap targets for mobile nav */
+    body.dark-theme .mobile-nav-item {
+        padding: 18px 20px !important;
+        font-size: 16px !important;
+    }
+}
+
+/* ===== SMALL MOBILE (< 480px) ===== */
+@media (max-width: 480px) {
+    body.dark-theme .search-section-container,
+    body.dark-theme .filters-container {
+        padding: 15px 10px !important;
+    }
+
+    body.dark-theme h1 {
+        font-size: 1.5rem !important;
+    }
+
+    body.dark-theme h2 {
+        font-size: 1.25rem !important;
+    }
+
+    body.dark-theme h3 {
+        font-size: 1.1rem !important;
+    }
+
+    /* Responsive cards */
+    body.dark-theme .thesis-grid,
+    body.dark-theme .research-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    /* Responsive buttons */
+    body.dark-theme .btn-group {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    body.dark-theme .btn-group .btn {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+/* ===== LANDSCAPE MODE (Mobile) ===== */
+@media (max-width: 900px) and (orientation: landscape) {
+    body.dark-theme .modal-body {
+        max-height: 50vh !important;
+    }
+
+    body.dark-theme .pdf-viewer-wrapper {
+        height: 70vh !important;
+    }
+}
+
+/* ===== MOBILE KEYWORD HIGHLIGHTING ===== */
+@media (max-width: 768px) {
+    body.dark-theme .search-highlight,
+    body.dark-theme mark.search-highlight {
+        padding: 3px 6px !important;
+        font-size: 14px !important;
+        border-width: 1px !important;
+    }
+
+    body.dark-theme .keyword-stats {
+        font-size: 13px !important;
+        padding: 8px 12px !important;
+    }
+
+    body.dark-theme .snippet-item {
+        padding: 12px !important;
+        font-size: 13px !important;
+    }
+
+    body.dark-theme .keyword-pill {
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+    }
+}

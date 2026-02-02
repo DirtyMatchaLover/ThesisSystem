@@ -226,17 +226,17 @@
                     
                     <div class="thesis-meta">
                         <div class="meta-item">
-                            <span>👤</span>
+                            <span></span>
                             <strong>Author:</strong> <?= htmlspecialchars($thesis['author'] ?? $thesis['author_name'] ?? 'Unknown Author') ?>
                         </div>
                         
                         <div class="meta-item">
-                            <span>📅</span>
+                            <span></span>
                             <strong>Submitted:</strong> <?= date('F j, Y', strtotime($thesis['created_at'] ?? 'now')) ?>
                         </div>
                         
                         <div class="meta-item">
-                            <span>📊</span>
+                            <span></span>
                             <strong>Status:</strong> 
                             <span class="status-badge status-<?= $thesis['status'] ?>">
                                 <?= htmlspecialchars(ucwords(str_replace('_', ' ', $thesis['status'] ?? 'unknown'))) ?>
@@ -245,21 +245,21 @@
 
                         <?php if (!empty($thesis['academic_year'])): ?>
                         <div class="meta-item">
-                            <span>🎓</span>
+                            <span></span>
                             <strong>Academic Year:</strong> <?= htmlspecialchars($thesis['academic_year']) ?>
                         </div>
                         <?php endif; ?>
 
                         <?php if (!empty($thesis['strand'])): ?>
                         <div class="meta-item">
-                            <span>📚</span>
+                            <span></span>
                             <strong>Strand:</strong> <?= htmlspecialchars($thesis['strand']) ?>
                         </div>
                         <?php endif; ?>
                         
                         <?php if (!empty($thesis['view_count']) || !empty($thesis['download_count'])): ?>
                         <div class="meta-item">
-                            <span>📈</span>
+                            <span></span>
                             <strong>Stats:</strong> 
                             <?= $thesis['view_count'] ?? 0 ?> views, <?= $thesis['download_count'] ?? 0 ?> downloads
                         </div>
@@ -274,16 +274,16 @@
                     
                     <?php if (!empty($thesis['file_path'])): ?>
                         <a href="<?= route('admin/download') ?>&id=<?= $thesis['id'] ?>" class="btn btn-success">
-                            📥 Download PDF
+                             Download PDF
                         </a>
                         
                         <a href="<?= route('admin/viewpdf') ?>&id=<?= $thesis['id'] ?>" target="_blank" class="btn btn-info">
-                            🔗 Open PDF in New Tab
+                             Open PDF in New Tab
                         </a>
                     <?php endif; ?>
 
                     <a href="<?= route('admin/comments') ?>&id=<?= $thesis['id'] ?>" class="btn btn-warning" target="_blank">
-                        💬 Comments
+                         Comments
                     </a>
                 </div>
             </div>
@@ -293,24 +293,24 @@
         <div class="pdf-container">
             <?php if (!empty($thesis['file_path'])): ?>
                 <div class="pdf-toolbar">
-                    <span>📄 PDF Viewer - <?= htmlspecialchars($thesis['original_filename'] ?? 'thesis.pdf') ?></span>
+                    <span> PDF Viewer - <?= htmlspecialchars($thesis['original_filename'] ?? 'thesis.pdf') ?></span>
                 </div>
                 
                 <iframe src="<?= route('admin/viewpdf') ?>&id=<?= $thesis['id'] ?>" 
                         class="pdf-frame"
                         title="Thesis PDF">
                     <div style="padding: 40px; text-align: center; color: #666;">
-                        <div style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;">📄</div>
+                        <div style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></div>
                         <h3>PDF Viewer Not Supported</h3>
                         <p>Your browser doesn't support embedded PDF viewing.</p>
                         <a href="<?= route('admin/download') ?>&id=<?= $thesis['id'] ?>" class="btn btn-primary">
-                            📥 Download PDF Instead
+                             Download PDF Instead
                         </a>
                     </div>
                 </iframe>
             <?php else: ?>
                 <div class="no-pdf">
-                    <div class="no-pdf-icon">📄</div>
+                    <div class="no-pdf-icon"></div>
                     <h3>No PDF Available</h3>
                     <p>This thesis doesn't have an associated PDF file.</p>
                 </div>
@@ -320,7 +320,7 @@
         <!-- Abstract Section -->
         <?php if (!empty($thesis['abstract'])): ?>
         <div class="abstract-section">
-            <h3>📝 Abstract</h3>
+            <h3> Abstract</h3>
             <div class="abstract-content">
                 <?= nl2br(htmlspecialchars($thesis['abstract'])) ?>
             </div>
@@ -330,13 +330,13 @@
         <!-- Admin Actions (for admin/faculty users) -->
         <?php if (current_user()['role'] === 'admin' || current_user()['role'] === 'faculty'): ?>
         <div class="admin-actions">
-            <h3>🛠️ Admin Actions</h3>
+            <h3>️ Admin Actions</h3>
             <div class="action-buttons">
                 <?php if ($thesis['status'] !== 'approved'): ?>
                     <a href="<?= route('admin/approve') ?>&id=<?= $thesis['id'] ?>" 
                        class="btn btn-success"
                        onclick="return confirm('Approve this thesis for publication?')">
-                        ✅ Approve Thesis
+                         Approve Thesis
                     </a>
                 <?php endif; ?>
                 
@@ -344,7 +344,7 @@
                     <a href="<?= route('admin/reject') ?>&id=<?= $thesis['id'] ?>" 
                        class="btn btn-danger"
                        onclick="return confirm('Reject this thesis?')">
-                        ❌ Reject Thesis
+                         Reject Thesis
                     </a>
                 <?php endif; ?>
                 
@@ -352,7 +352,7 @@
                     <a href="<?= route('admin/delete') ?>&id=<?= $thesis['id'] ?>" 
                        class="btn btn-danger"
                        onclick="return confirm('Are you sure you want to delete this thesis? This action cannot be undone.')">
-                        🗑️ Delete Thesis
+                        ️ Delete Thesis
                     </a>
                 <?php endif; ?>
             </div>
@@ -362,7 +362,7 @@
     <?php else: ?>
         <!-- Error State -->
         <div class="no-pdf">
-            <div class="no-pdf-icon">⚠️</div>
+            <div class="no-pdf-icon">️</div>
             <h3>Thesis Not Found</h3>
             <p>The thesis you're looking for doesn't exist or you don't have permission to view it.</p>
             <a href="<?= route('admin/dashboard') ?>" class="btn btn-primary">

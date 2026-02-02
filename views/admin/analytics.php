@@ -1,281 +1,6 @@
 <?php include __DIR__ . '/../layout/header.php'; ?>
 <?php include __DIR__ . '/../layout/navigation.php'; ?>
 
-<div class="analytics-container">
-    <div class="analytics-header">
-        <h1 class="analytics-title">📊 System Analytics & Reports</h1>
-        <p class="analytics-subtitle">Comprehensive insights for research evaluation</p>
-    </div>
-
-    <!-- Key Performance Indicators -->
-    <div class="kpi-grid">
-        <div class="kpi-card efficiency">
-            <div class="kpi-icon">⚡</div>
-            <div class="kpi-content">
-                <h3><?= number_format($metrics['avg_processing_days'] ?? 0, 1) ?></h3>
-                <p>Average Processing Days</p>
-                <small class="kpi-change <?= ($metrics['processing_improvement'] ?? 0) > 0 ? 'positive' : 'negative' ?>">
-                    <?= ($metrics['processing_improvement'] ?? 0) > 0 ? '↓' : '↑' ?> 
-                    <?= abs($metrics['processing_improvement'] ?? 0) ?>% vs manual
-                </small>
-            </div>
-        </div>
-
-        <div class="kpi-card quality">
-            <div class="kpi-icon">💯</div>
-            <div class="kpi-content">
-                <h3><?= number_format($metrics['approval_rate'] ?? 0, 1) ?>%</h3>
-                <p>Approval Rate</p>
-                <small class="kpi-change positive">
-                    ↑ <?= number_format($metrics['quality_improvement'] ?? 0, 1) ?>% improvement
-                </small>
-            </div>
-        </div>
-
-        <div class="kpi-card accessibility">
-            <div class="kpi-icon">🌐</div>
-            <div class="kpi-content">
-                <h3><?= number_format($metrics['total_downloads'] ?? 0) ?></h3>
-                <p>Total Downloads</p>
-                <small class="kpi-change positive">
-                    ↑ <?= number_format($metrics['access_increase'] ?? 0) ?>% more access
-                </small>
-            </div>
-        </div>
-
-        <div class="kpi-card satisfaction">
-            <div class="kpi-icon">😊</div>
-            <div class="kpi-content">
-                <h3><?= number_format($metrics['user_satisfaction'] ?? 0, 1) ?>/5</h3>
-                <p>User Satisfaction</p>
-                <small class="kpi-change positive">
-                    ⭐ <?= $metrics['total_responses'] ?? 0 ?> responses
-                </small>
-            </div>
-        </div>
-    </div>
-
-    <!-- Charts Section -->
-    <div class="charts-grid">
-        <!-- Submission Timeline Chart -->
-        <div class="chart-card">
-            <div class="chart-header">
-                <h3>📈 Submission Timeline Analysis</h3>
-                <p>Tracking submission efficiency over time</p>
-            </div>
-            <canvas id="timelineChart" width="400" height="200"></canvas>
-        </div>
-
-        <!-- Quality Metrics Chart -->
-        <div class="chart-card">
-            <div class="chart-header">
-                <h3>🎯 Quality & Compliance Metrics</h3>
-                <p>Format compliance and quality scores</p>
-            </div>
-            <canvas id="qualityChart" width="400" height="200"></canvas>
-        </div>
-
-        <!-- Access & Publication Stats -->
-        <div class="chart-card">
-            <div class="chart-header">
-                <h3>📚 Publication & Access Statistics</h3>
-                <p>Research accessibility and usage patterns</p>
-            </div>
-            <canvas id="accessChart" width="400" height="200"></canvas>
-        </div>
-
-        <!-- User Activity Heatmap -->
-        <div class="chart-card">
-            <div class="chart-header">
-                <h3>🔥 User Activity Patterns</h3>
-                <p>System usage by role and time</p>
-            </div>
-            <div id="activityHeatmap" class="heatmap-container"></div>
-        </div>
-    </div>
-
-    <!-- Detailed Analytics Tables -->
-    <div class="analytics-tables">
-        <!-- Strand Performance Analysis -->
-        <div class="table-card">
-            <div class="table-header">
-                <h3>🎓 Performance by Academic Strand</h3>
-                <button class="btn btn-export" onclick="exportData('strand')">📊 Export Data</button>
-            </div>
-            <div class="table-container">
-                <table class="analytics-table">
-                    <thead>
-                        <tr>
-                            <th>Strand</th>
-                            <th>Submissions</th>
-                            <th>Approved</th>
-                            <th>Avg. Processing Time</th>
-                            <th>Quality Score</th>
-                            <th>Downloads</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($strand_stats ?? [] as $strand): ?>
-                        <tr>
-                            <td>
-                                <span class="strand-badge strand-<?= strtolower($strand['name']) ?>">
-                                    <?= htmlspecialchars($strand['name']) ?>
-                                </span>
-                            </td>
-                            <td><?= number_format($strand['submissions']) ?></td>
-                            <td>
-                                <span class="approval-rate <?= $strand['approval_rate'] > 80 ? 'high' : ($strand['approval_rate'] > 60 ? 'medium' : 'low') ?>">
-                                    <?= number_format($strand['approval_rate'], 1) ?>%
-                                </span>
-                            </td>
-                            <td><?= number_format($strand['avg_processing_days'], 1) ?> days</td>
-                            <td>
-                                <div class="quality-bar">
-                                    <div class="quality-fill" style="width: <?= $strand['quality_score'] * 20 ?>%"></div>
-                                    <span><?= number_format($strand['quality_score'], 1) ?>/5</span>
-                                </div>
-                            </td>
-                            <td><?= number_format($strand['downloads']) ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- User Feedback Summary -->
-        <div class="table-card">
-            <div class="table-header">
-                <h3>💬 User Feedback Analysis</h3>
-                <button class="btn btn-survey" onclick="showSurveyResults()">📋 View Full Survey</button>
-            </div>
-            <div class="feedback-summary">
-                <div class="feedback-metrics">
-                    <div class="feedback-metric">
-                        <h4>Ease of Use</h4>
-                        <div class="rating-display">
-                            <span class="rating-score"><?= number_format($feedback['ease_of_use'] ?? 0, 1) ?></span>
-                            <div class="stars">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <span class="star <?= $i <= round($feedback['ease_of_use'] ?? 0) ? 'filled' : '' ?>">⭐</span>
-                                <?php endfor; ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="feedback-metric">
-                        <h4>System Speed</h4>
-                        <div class="rating-display">
-                            <span class="rating-score"><?= number_format($feedback['system_speed'] ?? 0, 1) ?></span>
-                            <div class="stars">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <span class="star <?= $i <= round($feedback['system_speed'] ?? 0) ? 'filled' : '' ?>">⭐</span>
-                                <?php endfor; ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="feedback-metric">
-                        <h4>Overall Satisfaction</h4>
-                        <div class="rating-display">
-                            <span class="rating-score"><?= number_format($feedback['overall_satisfaction'] ?? 0, 1) ?></span>
-                            <div class="stars">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <span class="star <?= $i <= round($feedback['overall_satisfaction'] ?? 0) ? 'filled' : '' ?>">⭐</span>
-                                <?php endfor; ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="recent-feedback">
-                    <h4>Recent Comments</h4>
-                    <div class="feedback-comments">
-                        <?php foreach ($recent_feedback ?? [] as $comment): ?>
-                        <div class="comment-item">
-                            <div class="comment-rating">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <span class="star <?= $i <= $comment['rating'] ? 'filled' : '' ?>">⭐</span>
-                                <?php endfor; ?>
-                            </div>
-                            <div class="comment-text">"<?= htmlspecialchars($comment['comment']) ?>"</div>
-                            <div class="comment-meta">
-                                - <?= htmlspecialchars($comment['user_type']) ?>, <?= date('M j, Y', strtotime($comment['created_at'])) ?>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Research Insights Section -->
-    <div class="insights-section">
-        <div class="insights-header">
-            <h3>🔬 Research Insights & Findings</h3>
-            <p>Key discoveries for your thesis research</p>
-        </div>
-
-        <div class="insights-grid">
-            <div class="insight-card">
-                <h4>📋 Submission Process Improvement</h4>
-                <ul>
-                    <li><strong><?= number_format($insights['time_reduction'] ?? 0) ?>% faster</strong> submission process vs manual</li>
-                    <li><strong><?= number_format($insights['error_reduction'] ?? 0) ?>% fewer</strong> submission errors</li>
-                    <li><strong><?= number_format($insights['completion_rate'] ?? 0) ?>%</strong> task completion rate</li>
-                </ul>
-            </div>
-
-            <div class="insight-card">
-                <h4>🎯 Quality & Organization Impact</h4>
-                <ul>
-                    <li><strong><?= number_format($insights['format_compliance'] ?? 0) ?>%</strong> format compliance rate</li>
-                    <li><strong><?= number_format($insights['revision_reduction'] ?? 0) ?>% fewer</strong> revision requests</li>
-                    <li><strong><?= number_format($insights['quality_improvement'] ?? 0) ?>%</strong> quality score improvement</li>
-                </ul>
-            </div>
-
-            <div class="insight-card">
-                <h4>🌐 Access & Publication Success</h4>
-                <ul>
-                    <li><strong><?= number_format($insights['access_increase'] ?? 0) ?>% increase</strong> in research access</li>
-                    <li><strong><?= number_format($insights['search_efficiency'] ?? 0) ?>x faster</strong> research discovery</li>
-                    <li><strong><?= number_format($insights['download_growth'] ?? 0) ?>%</strong> growth in downloads</li>
-                </ul>
-            </div>
-
-            <div class="insight-card">
-                <h4>😊 User Experience Success</h4>
-                <ul>
-                    <li><strong><?= number_format($insights['satisfaction_score'] ?? 0, 1) ?>/5</strong> average satisfaction rating</li>
-                    <li><strong><?= number_format($insights['recommendation_rate'] ?? 0) ?>%</strong> would recommend system</li>
-                    <li><strong><?= number_format($insights['adoption_rate'] ?? 0) ?>%</strong> user adoption rate</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- Export and Reporting Tools -->
-    <div class="export-section">
-        <h3>📊 Export & Reporting Tools</h3>
-        <div class="export-buttons">
-            <button class="btn btn-primary" onclick="exportFullReport()">
-                📄 Generate Complete Report
-            </button>
-            <button class="btn btn-secondary" onclick="exportChartData()">
-                📊 Export Chart Data
-            </button>
-            <button class="btn btn-secondary" onclick="exportUserFeedback()">
-                💬 Export User Feedback
-            </button>
-            <button class="btn btn-secondary" onclick="exportMetrics()">
-                📈 Export Performance Metrics
-            </button>
-        </div>
-    </div>
-</div>
-
 <style>
 .analytics-container {
     max-width: 1400px;
@@ -285,574 +10,497 @@
     min-height: 100vh;
 }
 
-.analytics-header {
-    text-align: center;
+.page-header {
     margin-bottom: 30px;
 }
 
-.analytics-title {
-    font-size: 2.5rem;
+.page-header h1 {
     color: #d32f2f;
-    margin-bottom: 10px;
+    font-size: 2rem;
+    margin-bottom: 5px;
 }
 
-.analytics-subtitle {
+.page-header p {
     color: #666;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
-/* KPI Grid */
-.kpi-grid {
+/* Overview Cards */
+.overview-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     margin-bottom: 30px;
 }
 
-.kpi-card {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    transition: all 0.3s ease;
-}
-
-.kpi-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.kpi-icon {
-    font-size: 3rem;
-    width: 80px;
-    text-align: center;
-}
-
-.kpi-content h3 {
-    font-size: 2.5rem;
-    margin: 0;
-    color: #333;
-}
-
-.kpi-content p {
-    margin: 5px 0;
-    color: #666;
-    font-weight: 600;
-}
-
-.kpi-change {
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.kpi-change.positive { color: #4caf50; }
-.kpi-change.negative { color: #f44336; }
-
-.kpi-card.efficiency { border-left: 5px solid #ff9800; }
-.kpi-card.quality { border-left: 5px solid #4caf50; }
-.kpi-card.accessibility { border-left: 5px solid #2196f3; }
-.kpi-card.satisfaction { border-left: 5px solid #9c27b0; }
-
-/* Charts Grid */
-.charts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.chart-card {
+.stat-card {
     background: white;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
 }
 
-.chart-header {
-    margin-bottom: 20px;
-    text-align: center;
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.chart-header h3 {
+.stat-card .icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.stat-card .value {
+    font-size: 2.5rem;
+    font-weight: bold;
     color: #333;
     margin-bottom: 5px;
 }
 
-.chart-header p {
+.stat-card .label {
     color: #666;
-    margin: 0;
     font-size: 0.9rem;
+    font-weight: 600;
 }
 
-/* Analytics Tables */
-.analytics-tables {
+.stat-card .sub-label {
+    color: #999;
+    font-size: 0.8rem;
+    margin-top: 8px;
+}
+
+/* Status breakdown */
+.status-breakdown {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-approved { background: #e8f5e9; color: #2e7d32; }
+.status-submitted { background: #e3f2fd; color: #1565c0; }
+.status-under_review { background: #fff3e0; color: #ef6c00; }
+.status-rejected { background: #ffebee; color: #c62828; }
+.status-draft { background: #f5f5f5; color: #666; }
+
+/* Two column layout */
+.two-column {
     display: grid;
-    gap: 30px;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
-.table-card {
+/* Section card */
+.section-card {
     background: white;
     border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.table-header {
-    padding: 20px;
-    background: #f8f9fa;
-    border-bottom: 2px solid #e0e0e0;
+.section-card h2 {
+    color: #d32f2f;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
 
-.table-header h3 {
-    color: #333;
-    margin: 0;
-}
-
-.table-container {
-    overflow-x: auto;
-}
-
-.analytics-table {
+/* Table styles */
+.data-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.analytics-table th {
+.data-table th {
     background: #f5f5f5;
-    padding: 15px;
+    padding: 12px;
     text-align: left;
     font-weight: 600;
     color: #555;
+    font-size: 0.9rem;
 }
 
-.analytics-table td {
-    padding: 15px;
+.data-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+}
+
+.data-table tr:hover {
+    background: #fafafa;
+}
+
+.thesis-title {
+    color: #333;
+    font-weight: 500;
+}
+
+.thesis-meta {
+    color: #999;
+    font-size: 0.8rem;
+    margin-top: 3px;
+}
+
+/* Activity item */
+.activity-item {
+    padding: 12px 0;
     border-bottom: 1px solid #f0f0f0;
 }
 
-.approval-rate.high { color: #4caf50; font-weight: 600; }
-.approval-rate.medium { color: #ff9800; font-weight: 600; }
-.approval-rate.low { color: #f44336; font-weight: 600; }
-
-.quality-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: relative;
-    background: #f0f0f0;
-    border-radius: 10px;
-    height: 20px;
-    min-width: 100px;
+.activity-item:last-child {
+    border-bottom: none;
 }
 
-.quality-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #f44336, #ff9800, #4caf50);
-    border-radius: 10px;
-    transition: width 0.5s ease;
+.activity-title {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
 }
 
-.quality-bar span {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+.activity-meta {
+    color: #999;
     font-size: 0.8rem;
+    margin-top: 4px;
+}
+
+.activity-time {
+    color: #666;
+    font-size: 0.75rem;
+}
+
+/* Chart container */
+.chart-container {
+    height: 300px;
+    margin-top: 20px;
+}
+
+/* Strand stats */
+.strand-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.strand-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #d32f2f;
+}
+
+.strand-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.strand-name {
     font-weight: 600;
     color: #333;
 }
 
-/* Feedback Section */
-.feedback-summary {
-    padding: 20px;
-}
-
-.feedback-metrics {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.feedback-metric {
-    text-align: center;
-}
-
-.feedback-metric h4 {
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.rating-display {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-}
-
-.rating-score {
-    font-size: 2rem;
+.strand-count {
+    font-size: 1.5rem;
     font-weight: bold;
     color: #d32f2f;
 }
 
-.stars {
+.strand-details {
     display: flex;
-    gap: 2px;
-}
-
-.star {
-    font-size: 1.2rem;
-    filter: grayscale(100%);
-    transition: filter 0.3s ease;
-}
-
-.star.filled {
-    filter: grayscale(0%);
-}
-
-.feedback-comments {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.comment-item {
-    padding: 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background: #fafafa;
-}
-
-.comment-rating {
-    margin-bottom: 8px;
-}
-
-.comment-text {
-    color: #333;
-    font-style: italic;
-    margin-bottom: 5px;
-}
-
-.comment-meta {
-    color: #666;
-    font-size: 0.9rem;
-}
-
-/* Insights Section */
-.insights-section {
-    background: white;
-    border-radius: 12px;
-    padding: 30px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.insights-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.insights-header h3 {
-    color: #d32f2f;
-    font-size: 1.8rem;
-    margin-bottom: 8px;
-}
-
-.insights-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.insight-card {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 20px;
-    border-left: 4px solid #d32f2f;
-}
-
-.insight-card h4 {
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.insight-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.insight-card li {
-    padding: 5px 0;
-    color: #555;
-}
-
-.insight-card strong {
-    color: #d32f2f;
-}
-
-/* Export Section */
-.export-section {
-    background: white;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.export-section h3 {
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.export-buttons {
-    display: flex;
-    justify-content: center;
     gap: 15px;
-    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: #666;
 }
 
-.btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
+.strand-stat {
+    display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
 }
 
-.btn-primary {
-    background: #d32f2f;
-    color: white;
+/* Responsive */
+@media (max-width: 968px) {
+    .two-column {
+        grid-template-columns: 1fr;
+    }
 }
 
-.btn-primary:hover {
-    background: #b71c1c;
-    transform: translateY(-2px);
-}
-
-.btn-secondary {
-    background: #f5f5f5;
-    color: #333;
-    border: 2px solid #e0e0e0;
-}
-
-.btn-secondary:hover {
-    background: #e0e0e0;
-    transform: translateY(-2px);
-}
-
-.btn-export {
-    background: #4caf50;
-    color: white;
-}
-
-.btn-export:hover {
-    background: #388e3c;
-}
-
-.btn-survey {
-    background: #2196f3;
-    color: white;
-}
-
-.btn-survey:hover {
-    background: #1976d2;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
-    .analytics-container {
-        padding: 15px;
+    .overview-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
-    
-    .kpi-grid {
+}
+
+@media (max-width: 480px) {
+    .overview-grid {
         grid-template-columns: 1fr;
-    }
-    
-    .charts-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .chart-card {
-        min-width: auto;
-    }
-    
-    .feedback-metrics {
-        grid-template-columns: 1fr;
-    }
-    
-    .insights-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .export-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn {
-        width: 100%;
-        max-width: 250px;
-        justify-content: center;
     }
 }
 </style>
 
-<script>
-// Sample data for demonstration - replace with actual data from your backend
-const sampleData = {
-    timeline: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        manual: [15, 12, 18, 14, 16, 13],
-        digital: [3, 2, 4, 2, 3, 2]
-    },
-    quality: {
-        labels: ['Format Compliance', 'Content Quality', 'Citation Accuracy', 'Overall Score'],
-        before: [65, 70, 60, 65],
-        after: [92, 85, 88, 90]
-    },
-    access: {
-        labels: ['STEM', 'ABM', 'HUMSS', 'GAS'],
-        downloads: [450, 320, 280, 150],
-        views: [1200, 890, 650, 420]
-    }
-};
+<div class="analytics-container">
+    <div class="page-header">
+        <h1>📊 System Analytics</h1>
+        <p>Real-time system metrics and performance data</p>
+    </div>
 
-// Initialize charts when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    initializeCharts();
-});
+    <!-- Overview Statistics -->
+    <div class="overview-grid">
+        <div class="stat-card">
+            <div class="icon">📚</div>
+            <div class="value"><?= number_format($overview['total']) ?></div>
+            <div class="label">Total Theses</div>
+            <div class="status-breakdown">
+                <span class="status-badge status-approved"><?= $overview['approved'] ?> Approved</span>
+                <span class="status-badge status-submitted"><?= $overview['submitted'] ?> Submitted</span>
+                <span class="status-badge status-under_review"><?= $overview['under_review'] ?> Review</span>
+            </div>
+        </div>
 
-function initializeCharts() {
-    // You would integrate with Chart.js or similar library here
-    // For now, we'll create placeholder visualizations
-    
-    // Timeline Chart
-    createTimelineChart();
-    
-    // Quality Chart  
-    createQualityChart();
-    
-    // Access Chart
-    createAccessChart();
-    
-    // Activity Heatmap
-    createActivityHeatmap();
-}
+        <div class="stat-card">
+            <div class="icon">👥</div>
+            <div class="value"><?= number_format($overview['students']) ?></div>
+            <div class="label">Total Students</div>
+            <div class="sub-label">
+                <?= $user_stats['students_with_submissions'] ?> with submissions
+            </div>
+        </div>
 
-function createTimelineChart() {
-    const canvas = document.getElementById('timelineChart');
-    const ctx = canvas.getContext('2d');
-    
-    // Simple bar chart representation
-    ctx.fillStyle = '#d32f2f';
-    ctx.fillRect(50, 50, 100, 100);
-    ctx.fillStyle = '#4caf50';
-    ctx.fillRect(200, 100, 100, 50);
-    
-    ctx.fillStyle = '#333';
-    ctx.font = '14px Arial';
-    ctx.fillText('Manual Process', 30, 170);
-    ctx.fillText('Digital System', 180, 170);
-}
+        <div class="stat-card">
+            <div class="icon">📥</div>
+            <div class="value"><?= number_format($overview['total_downloads']) ?></div>
+            <div class="label">Total Downloads</div>
+            <div class="sub-label">
+                <?= number_format($overview['total_views']) ?> views
+            </div>
+        </div>
 
-function createQualityChart() {
-    const canvas = document.getElementById('qualityChart');
-    const ctx = canvas.getContext('2d');
-    
-    // Simple visualization
-    ctx.fillStyle = '#ff9800';
-    ctx.fillRect(50, 50, 80, 100);
-    ctx.fillStyle = '#4caf50';
-    ctx.fillRect(150, 30, 80, 120);
-    
-    ctx.fillStyle = '#333';
-    ctx.font = '14px Arial';
-    ctx.fillText('Before System', 30, 170);
-    ctx.fillText('After System', 130, 170);
-}
+        <div class="stat-card">
+            <div class="icon">✅</div>
+            <div class="value"><?= number_format($thesis_stats['approval_rate'], 1) ?>%</div>
+            <div class="label">Approval Rate</div>
+            <div class="sub-label">
+                Avg: <?= number_format($thesis_stats['avg_approval_days'], 1) ?> days
+            </div>
+        </div>
 
-function createAccessChart() {
-    const canvas = document.getElementById('accessChart');
-    const ctx = canvas.getContext('2d');
-    
-    // Simple pie chart representation
-    ctx.beginPath();
-    ctx.arc(150, 100, 70, 0, Math.PI);
-    ctx.fillStyle = '#2196f3';
-    ctx.fill();
-    
-    ctx.beginPath();
-    ctx.arc(150, 100, 70, Math.PI, 2 * Math.PI);
-    ctx.fillStyle = '#ff9800';
-    ctx.fill();
-}
+        <div class="stat-card">
+            <div class="icon">📅</div>
+            <div class="value"><?= number_format($thesis_stats['this_month']) ?></div>
+            <div class="label">This Month</div>
+            <div class="sub-label">
+                New submissions
+            </div>
+        </div>
 
-function createActivityHeatmap() {
-    const container = document.getElementById('activityHeatmap');
-    
-    // Create a simple grid heatmap
-    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const hours = ['8AM', '10AM', '12PM', '2PM', '4PM', '6PM'];
-    
-    let heatmapHTML = '<div class="heatmap-grid">';
-    
-    // Add headers
-    heatmapHTML += '<div class="heatmap-header"></div>';
-    hours.forEach(hour => {
-        heatmapHTML += `<div class="heatmap-header">${hour}</div>`;
-    });
-    
-    // Add data rows
-    days.forEach(day => {
-        heatmapHTML += `<div class="heatmap-label">${day}</div>`;
-        hours.forEach(() => {
-            const intensity = Math.random();
-            const opacity = intensity * 0.8 + 0.2;
-            heatmapHTML += `<div class="heatmap-cell" style="background: rgba(211, 47, 47, ${opacity});"></div>`;
-        });
-    });
-    
-    heatmapHTML += '</div>';
-    
-    container.innerHTML = heatmapHTML;
-}
+        <div class="stat-card">
+            <div class="icon">👤</div>
+            <div class="value"><?= number_format($user_stats['active_users']) ?></div>
+            <div class="label">Active Users</div>
+            <div class="sub-label">
+                Last 30 days
+            </div>
+        </div>
 
-// Export functions
-function exportFullReport() {
-    alert('Generating comprehensive analytics report...\nThis would create a PDF with all metrics and charts.');
-}
+        <div class="stat-card">
+            <div class="icon">👨‍🏫</div>
+            <div class="value"><?= number_format($overview['faculty']) ?></div>
+            <div class="label">Faculty Members</div>
+            <div class="sub-label">
+                <?= $overview['librarians'] ?> librarians, <?= $overview['admins'] ?> admins
+            </div>
+        </div>
 
-function exportChartData() {
-    alert('Exporting chart data as CSV...\nThis would download all chart data in spreadsheet format.');
-}
+        <div class="stat-card">
+            <div class="icon">💾</div>
+            <div class="value"><?= number_format($overview['total_files']) ?></div>
+            <div class="label">Files Stored</div>
+            <div class="sub-label">
+                PDF documents
+            </div>
+        </div>
+    </div>
 
-function exportUserFeedback() {
-    alert('Exporting user feedback...\nThis would compile all survey responses and comments.');
-}
+    <!-- Recent Activity & Popular Theses -->
+    <div class="two-column">
+        <div class="section-card">
+            <h2>🕒 Recent Activity</h2>
+            <?php if (empty($recent_activity)): ?>
+                <p style="color: #999; text-align: center; padding: 20px;">No recent activity</p>
+            <?php else: ?>
+                <?php foreach ($recent_activity as $activity): ?>
+                    <div class="activity-item">
+                        <div class="activity-title"><?= htmlspecialchars($activity['title']) ?></div>
+                        <div class="activity-meta">
+                            <span class="status-badge status-<?= $activity['status'] ?>">
+                                <?= ucwords(str_replace('_', ' ', $activity['status'])) ?>
+                            </span>
+                            <span style="margin: 0 8px;">•</span>
+                            <?= htmlspecialchars($activity['author_name']) ?>
+                            <?php if ($activity['strand']): ?>
+                                <span style="margin: 0 8px;">•</span>
+                                <?= htmlspecialchars($activity['strand']) ?>
+                            <?php endif; ?>
+                        </div>
+                        <div class="activity-time">
+                            Updated: <?= date('M j, Y g:i A', strtotime($activity['updated_at'])) ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
 
-function exportMetrics() {
-    alert('Exporting performance metrics...\nThis would provide detailed system performance data.');
-}
+        <div class="section-card">
+            <h2>🔥 Popular Theses</h2>
+            <?php if (empty($popular_theses)): ?>
+                <p style="color: #999; text-align: center; padding: 20px;">No data available</p>
+            <?php else: ?>
+                <?php foreach ($popular_theses as $thesis): ?>
+                    <div class="activity-item">
+                        <div class="activity-title">
+                            <a href="?route=admin/pdfview&id=<?= $thesis['id'] ?>" style="color: #d32f2f; text-decoration: none;">
+                                <?= htmlspecialchars(substr($thesis['title'], 0, 50)) . (strlen($thesis['title']) > 50 ? '...' : '') ?>
+                            </a>
+                        </div>
+                        <div class="activity-meta">
+                            <?= htmlspecialchars($thesis['author_name']) ?>
+                            <?php if ($thesis['strand']): ?>
+                                <span style="margin: 0 8px;">•</span>
+                                <?= htmlspecialchars($thesis['strand']) ?>
+                            <?php endif; ?>
+                        </div>
+                        <div class="activity-time">
+                            📥 <?= $thesis['download_count'] ?> downloads • 👁️ <?= $thesis['view_count'] ?> views
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
 
-function showSurveyResults() {
-    alert('Opening detailed survey results...\nThis would show comprehensive user feedback analysis.');
-}
+    <!-- Performance by Strand -->
+    <div class="section-card">
+        <h2>📊 Performance by Academic Strand</h2>
+        <?php if (empty($strand_stats)): ?>
+            <p style="color: #999; text-align: center; padding: 20px;">No data available</p>
+        <?php else: ?>
+            <div class="strand-grid">
+                <?php foreach ($strand_stats as $strand): ?>
+                    <div class="strand-item">
+                        <div class="strand-header">
+                            <span class="strand-name"><?= htmlspecialchars($strand['name']) ?></span>
+                            <span class="strand-count"><?= $strand['submissions'] ?></span>
+                        </div>
+                        <div class="strand-details">
+                            <div class="strand-stat">
+                                <span>✅</span>
+                                <span><?= number_format($strand['approval_rate'], 1) ?>% approved</span>
+                            </div>
+                            <div class="strand-stat">
+                                <span>⏱️</span>
+                                <span><?= number_format($strand['avg_processing_days'], 1) ?> days avg</span>
+                            </div>
+                            <div class="strand-stat">
+                                <span>📥</span>
+                                <span><?= $strand['downloads'] ?> downloads</span>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
 
-function exportData(type) {
-    alert(`Exporting ${type} performance data...\nThis would generate a detailed report for ${type} analysis.`);
-}
-</script>
+    <!-- Monthly Trends -->
+    <?php if (!empty($monthly_trends)): ?>
+    <div class="section-card" style="margin-top: 20px;">
+        <h2>📈 Monthly Submission Trends (Last 6 Months)</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Submissions</th>
+                    <th>Approved</th>
+                    <th>Approval Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($monthly_trends as $trend): ?>
+                    <tr>
+                        <td><?= date('F Y', strtotime($trend['month'] . '-01')) ?></td>
+                        <td><?= $trend['submissions'] ?></td>
+                        <td><?= $trend['approved'] ?></td>
+                        <td>
+                            <?php
+                            $rate = $trend['submissions'] > 0 ? ($trend['approved'] / $trend['submissions'] * 100) : 0;
+                            ?>
+                            <span class="status-badge <?= $rate >= 80 ? 'status-approved' : ($rate >= 60 ? 'status-submitted' : 'status-rejected') ?>">
+                                <?= number_format($rate, 1) ?>%
+                            </span>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php endif; ?>
+
+    <!-- Key Metrics Summary -->
+    <div class="section-card" style="margin-top: 20px;">
+        <h2>📋 Key Performance Metrics</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Average Approval Time</td>
+                    <td><strong><?= number_format($thesis_stats['avg_approval_days'], 1) ?> days</strong></td>
+                    <td>Min: <?= number_format($thesis_stats['min_approval_days'], 1) ?> days | Max: <?= number_format($thesis_stats['max_approval_days'], 1) ?> days</td>
+                </tr>
+                <tr>
+                    <td>Approval Success Rate</td>
+                    <td><strong><?= number_format($thesis_stats['approval_rate'], 1) ?>%</strong></td>
+                    <td><?= $overview['approved'] ?> approved out of <?= $overview['approved'] + $overview['rejected'] ?> reviewed</td>
+                </tr>
+                <tr>
+                    <td>User Engagement</td>
+                    <td><strong><?= number_format($overview['total_downloads'] + $overview['total_views']) ?></strong></td>
+                    <td><?= number_format($overview['total_downloads']) ?> downloads + <?= number_format($overview['total_views']) ?> views</td>
+                </tr>
+                <tr>
+                    <td>Active Student Participation</td>
+                    <td><strong><?= number_format(($user_stats['students_with_submissions'] / max($overview['students'], 1)) * 100, 1) ?>%</strong></td>
+                    <td><?= $user_stats['students_with_submissions'] ?> out of <?= $overview['students'] ?> students have submitted</td>
+                </tr>
+                <tr>
+                    <td>System Activity</td>
+                    <td><strong><?= $user_stats['active_users'] ?> active users</strong></td>
+                    <td>Users who logged in within the last 30 days</td>
+                </tr>
+                <tr>
+                    <td>Growth This Month</td>
+                    <td><strong><?= $thesis_stats['this_month'] ?> submissions</strong></td>
+                    <td><?= $user_stats['new_this_month'] ?> new users joined</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <?php include __DIR__ . '/../layout/footer.php'; ?>

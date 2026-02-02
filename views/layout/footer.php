@@ -8,7 +8,7 @@
     <nav class="footer-nav">
       <a href="<?= route('home') ?>">Home</a>
       <span class="separator">|</span>
-      <a href="#">About</a>
+      <a href="<?= route('about') ?>">About</a>
       <span class="separator">|</span>
       <a href="<?= route('research') ?>">Research</a>
       <span class="separator">|</span>

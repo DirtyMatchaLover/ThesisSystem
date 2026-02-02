@@ -1,14 +1,15 @@
 <?php require_once __DIR__ . '/layout/header.php'; ?>
+<?php require_once __DIR__ . '/layout/navigation.php'; ?>
 
 <div class="main-content">
     <div class="container">
         <section class="about-section">
             <div class="about-container">
-                <h1 class="about-title">About PCC Thesis Management System</h1>
-                
+                <h1 class="about-title">About ResearchHub</h1>
+
                 <div class="about-content">
                     <p class="about-description">
-                        The Pasig Catholic College Thesis Management System is a comprehensive digital platform designed to streamline the submission, review, and publication of student research papers. Our system provides a secure, user-friendly environment where students can easily submit their academic work, faculty members can efficiently review and approve submissions, and the wider academic community can access approved research papers. Built with modern web technologies, this platform ensures data security, accessibility, and seamless collaboration between students, faculty, and administrators while maintaining the highest standards of academic integrity and research excellence.
+                        ResearchHub is a comprehensive digital platform designed to streamline the submission, review, and publication of student research papers. Our system provides a secure, user-friendly environment where students can easily submit their academic work, faculty members can efficiently review and approve submissions, and the wider academic community can access approved research papers. Built with modern web technologies, this platform ensures data security, accessibility, and seamless collaboration between students, faculty, and administrators while maintaining the highest standards of academic integrity and research excellence.
                     </p>
                 </div>
 
@@ -73,7 +74,7 @@
 </div>
 
 <style>
-/* About Page Styles */
+/* About Page Styles - Library Theme */
 .about-section {
     padding: 40px 0;
     min-height: 60vh;
@@ -86,26 +87,30 @@
 }
 
 .about-title {
-    color: #d32f2f;
+    color: #7b3f00;
     font-size: 2.5em;
     margin-bottom: 30px;
     font-weight: 600;
+    font-family: 'Georgia', 'Garamond', serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .about-content {
-    background: white;
+    background: linear-gradient(135deg, #faf8f3 0%, #f5f1e8 100%);
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(61, 40, 23, 0.15);
     margin-bottom: 40px;
+    border: 2px solid #d4a574;
 }
 
 .about-description {
     font-size: 1.1em;
     line-height: 1.8;
-    color: #444;
+    color: #2c2416;
     text-align: justify;
     margin: 0;
+    font-family: 'Georgia', serif;
 }
 
 .redirect-section {
@@ -113,9 +118,10 @@
 }
 
 .redirect-section h3 {
-    color: #333;
+    color: #3d2817;
     margin-bottom: 20px;
     font-size: 1.4em;
+    font-family: 'Georgia', serif;
 }
 
 .redirect-buttons {
@@ -135,36 +141,44 @@
     align-items: center;
     gap: 8px;
     font-size: 1em;
+    font-family: 'Georgia', serif;
+    border: 2px solid transparent;
 }
 
 .redirect-btn.primary {
-    background: #d32f2f;
-    color: white;
+    background: linear-gradient(135deg, #7b3f00 0%, #5a2d00 100%);
+    color: #f5e6d3;
+    border-color: #d4a574;
 }
 
 .redirect-btn.primary:hover {
-    background: #b71c1c;
+    background: linear-gradient(135deg, #5a2d00 0%, #3d1e00 100%);
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(123, 63, 0, 0.3);
 }
 
 .redirect-btn.secondary {
-    background: #1976d2;
-    color: white;
+    background: linear-gradient(135deg, #8b6f47 0%, #6f5635 100%);
+    color: #f5e6d3;
+    border-color: #d4a574;
 }
 
 .redirect-btn.secondary:hover {
-    background: #1565c0;
+    background: linear-gradient(135deg, #6f5635 0%, #5a4429 100%);
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(139, 111, 71, 0.3);
 }
 
 .redirect-btn.success {
-    background: #388e3c;
-    color: white;
+    background: linear-gradient(135deg, #d4a574 0%, #c9955f 100%);
+    color: #3d2817;
+    border-color: #d4a574;
 }
 
 .redirect-btn.success:hover {
-    background: #2e7d32;
+    background: linear-gradient(135deg, #c9955f 0%, #b88750 100%);
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4);
 }
 
 .auto-redirect-section {
@@ -172,21 +186,23 @@
 }
 
 .redirect-info {
-    color: #666;
+    color: #3d2817;
     font-style: italic;
+    font-family: 'Georgia', serif;
 }
 
 .redirect-link {
-    color: #d32f2f;
+    color: #7b3f00;
     text-decoration: none;
     font-weight: 500;
 }
 
 .redirect-link:hover {
     text-decoration: underline;
+    color: #5a2d00;
 }
 
-/* Modal Styles */
+/* Modal Styles - Library Theme */
 .modal {
     position: fixed;
     z-index: 1000;
@@ -194,20 +210,27 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(61, 40, 23, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .modal-content {
-    background-color: white;
+    background: linear-gradient(135deg, #faf8f3 0%, #f5f1e8 100%);
     padding: 30px;
     border-radius: 10px;
     max-width: 400px;
     width: 90%;
     position: relative;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 30px rgba(61, 40, 23, 0.3);
+    border: 2px solid #d4a574;
+}
+
+.modal-content h3 {
+    color: #3d2817;
+    font-family: 'Georgia', serif;
+    margin-bottom: 20px;
 }
 
 .close {
@@ -217,11 +240,11 @@
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    color: #666;
+    color: #8b6f47;
 }
 
 .close:hover {
-    color: #d32f2f;
+    color: #7b3f00;
 }
 
 .redirect-options {
@@ -232,17 +255,20 @@
     display: block;
     padding: 12px 15px;
     margin: 8px 0;
-    background: #f5f5f5;
-    color: #333;
+    background: rgba(212, 165, 116, 0.2);
+    color: #3d2817;
     text-decoration: none;
     border-radius: 6px;
     transition: all 0.3s ease;
+    border: 1px solid #d4a574;
+    font-family: 'Georgia', serif;
 }
 
 .option-link:hover {
-    background: #d32f2f;
-    color: white;
+    background: linear-gradient(135deg, #7b3f00 0%, #5a2d00 100%);
+    color: #f5e6d3;
     transform: translateX(5px);
+    box-shadow: 0 2px 10px rgba(123, 63, 0, 0.3);
 }
 
 /* Responsive Design */

@@ -1,6 +1,76 @@
 /* ----------------------------
-   Base Styles & CSS Reset
+   Base Styles & CSS Reset - Library Theme
 ----------------------------- */
+
+/* CSS Variables for Theming */
+:root {
+    /* Light Theme (Default) */
+    --bg-primary: #f5f1e8;
+    --bg-secondary: #faf8f3;
+    --bg-tertiary: #f5f5dc;
+    --text-primary: #2c2416;
+    --text-secondary: #3d2817;
+    --text-tertiary: #5c4033;
+    --accent-primary: #7b3f00;
+    --accent-secondary: #5a2d00;
+    --accent-tertiary: #d4a574;
+    --accent-quaternary: #8b6f47;
+    --border-primary: #7b3f00;
+    --border-secondary: #d4a574;
+    --header-bg: linear-gradient(135deg, #3d2817 0%, #4a3323 100%);
+    --header-text: #f5e6d3;
+    --card-bg: linear-gradient(135deg, #f5f5dc 0%, #f0e6d2 100%);
+    --card-border: #8b4513;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --overlay-bg: linear-gradient(135deg, rgba(245, 241, 232, 0.85) 0%, rgba(235, 228, 211, 0.9) 100%);
+    --footer-bg: #e8e8e8;
+    --footer-text: #666;
+    --footer-link: #666;
+    --footer-separator: #999;
+}
+
+/* Dark Theme - Enhanced and More Appealing */
+body.dark-theme {
+    /* Rich, warm dark backgrounds with depth */
+    --bg-primary: #0d0b09;
+    --bg-secondary: #1a1410;
+    --bg-tertiary: #241d16;
+
+    /* Warm, readable text with good contrast */
+    --text-primary: #f5e6d3;
+    --text-secondary: #ffd89b;
+    --text-tertiary: #deb887;
+
+    /* Vibrant gold/amber accents for visual appeal */
+    --accent-primary: #ffa726;
+    --accent-secondary: #ffb74d;
+    --accent-tertiary: #ff9800;
+    --accent-quaternary: #ffcc80;
+
+    /* Glowing borders for modern feel */
+    --border-primary: #ffa726;
+    --border-secondary: #ff9800;
+
+    /* Deep, rich header with subtle gradient */
+    --header-bg: linear-gradient(135deg, #1a1410 0%, #241d16 50%, #2d2318 100%);
+    --header-text: #ffd89b;
+
+    /* Elevated cards with warm undertones */
+    --card-bg: linear-gradient(135deg, #1a1410 0%, #241d16 100%);
+    --card-border: #ffa726;
+
+    /* Enhanced shadows for depth */
+    --shadow-color: rgba(0, 0, 0, 0.8);
+
+    /* Rich overlay with warmth */
+    --overlay-bg: linear-gradient(135deg, rgba(13, 11, 9, 0.95) 0%, rgba(26, 20, 16, 0.98) 100%);
+
+    /* Footer with matching dark theme */
+    --footer-bg: linear-gradient(135deg, #0d0b09 0%, #1a1410 100%);
+    --footer-text: #deb887;
+    --footer-link: #ffa726;
+    --footer-separator: #8b6f47;
+}
 
 * {
     margin: 0;
@@ -9,19 +79,37 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f4f4f4;
-    color: #333;
+    font-family: 'Georgia', 'Merriweather', 'Times New Roman', serif;
+    background: var(--bg-primary) url('../images/wallpaper.png') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
+}
+
+/* Universal overlay for all pages */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--overlay-bg);
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* Common text styles */
 h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0.5rem;
     font-weight: 600;
+    font-family: 'Georgia', 'Garamond', serif;
+    color: var(--text-secondary);
 }
 
 p {
@@ -29,13 +117,13 @@ p {
 }
 
 a {
-    color: #d32f2f;
+    color: var(--accent-primary);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 a:hover {
-    color: #b71c1c;
+    color: var(--accent-secondary);
 }
 
 /* Utility classes */
@@ -43,6 +131,44 @@ a:hover {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+/* Main content area - Universal styling for all pages */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+    min-height: calc(100vh - 200px);
+}
+
+.main-content .container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 12px;
+    border: 2px solid var(--border-primary);
+    box-shadow: 0 4px 20px var(--shadow-color);
+    position: relative;
+    z-index: 1;
+}
+
+/* Dark theme adjustment for content containers */
+body.dark-theme .main-content .container {
+    background: rgba(26, 20, 16, 0.95) !important;
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 167, 38, 0.2);
+}
+
+/* Ensure section containers also use dark theme */
+body.dark-theme .main-content section {
+    background: transparent;
+}
+
+body.dark-theme .main-content .about-container {
+    background: transparent;
 }
 
 .text-center {

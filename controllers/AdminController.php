@@ -1,21 +1,29 @@
 <?php
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/Thesis.php';
+require_once __DIR__ . '/../models/SystemMetrics.php';
 
 class AdminController {
     private $userModel;
     private $thesisModel;
+    private $metricsModel;
 
     public function __construct() {
         $this->userModel = new User();
         $this->thesisModel = new Thesis();
+        $this->metricsModel = new SystemMetrics();
     }
 
     // Show admin dashboard
     public function dashboard() {
         $stats = $this->thesisModel->getStats();
         $all = $this->thesisModel->all();
-        
+
+        // Get system metrics for admin
+        $systemMetrics = $this->metricsModel->getSystemMetrics();
+        $recentActivity = $this->metricsModel->getRecentActivity(10);
+        $systemTrends = $this->metricsModel->getSystemTrends(7);
+
         // Add author information if missing
         foreach ($all as &$thesis) {
             if (empty($thesis['author']) && !empty($thesis['author_id'])) {
@@ -31,7 +39,7 @@ class AdminController {
                 }
             }
         }
-        
+
         include __DIR__ . '/../views/admin/dashboard.php';
     }
 
@@ -58,11 +66,13 @@ class AdminController {
                 redirect('admin/dashboard');
             }
 
-            $success = $this->thesisModel->updateStatus($id, 'approved');
-            
+            // Record who approved and when
+            $approver_id = current_user()['id'];
+            $success = $this->thesisModel->updateStatus($id, 'approved', $approver_id);
+
             if ($success) {
                 // Log the approval
-                $this->logActivity(current_user()['id'], 'thesis_approved', $id);
+                $this->logActivity($approver_id, 'thesis_approved', $id);
                 
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo json_encode([
@@ -94,7 +104,7 @@ class AdminController {
         redirect('admin/dashboard');
     }
 
-    // Reject a thesis (mark as under review again)
+    // Reject a thesis (mark as rejected or under review based on context)
     public function reject($id) {
         if (!$id || !is_numeric($id)) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -117,22 +127,31 @@ class AdminController {
                 redirect('admin/dashboard');
             }
 
-            $success = $this->thesisModel->updateStatus($id, 'under_review');
-            
+            // Determine new status based on current status
+            // If currently approved, move to under_review (for re-review)
+            // Otherwise, mark as rejected
+            $newStatus = ($thesis['status'] === 'approved') ? 'under_review' : 'rejected';
+            $success = $this->thesisModel->updateStatus($id, $newStatus);
+
             if ($success) {
                 // Log the rejection/review request
-                $this->logActivity(current_user()['id'], 'thesis_review_requested', $id);
-                
+                $action = ($newStatus === 'rejected') ? 'thesis_rejected' : 'thesis_review_requested';
+                $this->logActivity(current_user()['id'], $action, $id);
+
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $message = ($newStatus === 'rejected') ? 'Thesis rejected' : 'Thesis marked for review';
                     echo json_encode([
-                        'success' => true, 
-                        'message' => 'Thesis marked for review',
-                        'new_status' => 'under_review'
+                        'success' => true,
+                        'message' => $message,
+                        'new_status' => $newStatus
                     ]);
                     exit;
                 }
-                
-                set_flash('success', 'Thesis "' . $thesis['title'] . '" marked for review.');
+
+                $flashMessage = ($newStatus === 'rejected')
+                    ? 'Thesis "' . $thesis['title'] . '" has been rejected.'
+                    : 'Thesis "' . $thesis['title'] . '" marked for review.';
+                set_flash('success', $flashMessage);
             } else {
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo json_encode(['success' => false, 'message' => 'Failed to update thesis status']);
@@ -141,8 +160,8 @@ class AdminController {
                 set_flash('error', 'Failed to update thesis status.');
             }
         } catch (Exception $e) {
-            error_log("Thesis review request error: " . $e->getMessage());
-            
+            error_log("Thesis rejection error: " . $e->getMessage());
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['success' => false, 'message' => 'An error occurred while processing']);
                 exit;
@@ -239,13 +258,28 @@ class AdminController {
             exit;
         }
 
+        // Validate file path to prevent directory traversal
+        $uploadsDir = __DIR__ . '/../uploads/theses/';
         $filePath = __DIR__ . '/../' . $thesis['file_path'];
-        if (!file_exists($filePath)) {
+        $realPath = realpath($filePath);
+        $realUploadsDir = realpath($uploadsDir);
+
+        // Ensure the file exists and is within the uploads directory
+        if (!$realPath || !$realUploadsDir || strpos($realPath, $realUploadsDir) !== 0) {
+            error_log("Security: Attempted directory traversal in viewPdf - Path: " . $thesis['file_path'] . " - User: " . current_user()['email']);
+            http_response_code(403);
+            echo "<div style='text-align: center; padding: 50px;'>";
+            echo "<h2>Access Denied</h2>";
+            echo "<p>Invalid file path.</p>";
+            echo "</div>";
+            exit;
+        }
+
+        if (!file_exists($realPath)) {
             http_response_code(404);
             echo "<div style='text-align: center; padding: 50px;'>";
             echo "<h2>File Not Found on Server</h2>";
             echo "<p>The PDF file exists in the database but not on the server.</p>";
-            echo "<p>File path: " . htmlspecialchars($thesis['file_path']) . "</p>";
             echo "</div>";
             exit;
         }
@@ -253,7 +287,7 @@ class AdminController {
         // Check if file is actually a PDF
         if (function_exists('finfo_open')) {
             $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mimeType = finfo_file($fileInfo, $filePath);
+            $mimeType = finfo_file($fileInfo, $realPath);
             finfo_close($fileInfo);
 
             if ($mimeType !== 'application/pdf') {
@@ -269,20 +303,20 @@ class AdminController {
         // Set headers for PDF viewing in browser (not download)
         $filename = $thesis['original_filename'] ?? basename($thesis['file_path']);
         $filename = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $filename);
-        
+
         header('Content-Type: application/pdf');
         header('Content-Disposition: inline; filename="' . $filename . '"'); // 'inline' for viewing
-        header('Content-Length: ' . filesize($filePath));
+        header('Content-Length: ' . filesize($realPath));
         header('Cache-Control: public, max-age=3600');
         header('Pragma: public');
-        
+
         // Clear any output buffer
         if (ob_get_level()) {
             ob_end_clean();
         }
-        
+
         // Output the PDF file
-        readfile($filePath);
+        readfile($realPath);
         exit;
     }
 
@@ -347,8 +381,20 @@ class AdminController {
             exit('File not found');
         }
 
+        // Validate file path to prevent directory traversal
+        $uploadsDir = __DIR__ . '/../uploads/theses/';
         $filePath = __DIR__ . '/../' . $thesis['file_path'];
-        if (!file_exists($filePath)) {
+        $realPath = realpath($filePath);
+        $realUploadsDir = realpath($uploadsDir);
+
+        // Ensure the file exists and is within the uploads directory
+        if (!$realPath || !$realUploadsDir || strpos($realPath, $realUploadsDir) !== 0) {
+            error_log("Security: Attempted directory traversal in downloadThesis - Path: " . $thesis['file_path'] . " - User: " . current_user()['email']);
+            http_response_code(403);
+            exit('Access denied');
+        }
+
+        if (!file_exists($realPath)) {
             http_response_code(404);
             exit('File not found on server');
         }
@@ -359,10 +405,10 @@ class AdminController {
         // Set headers for file download
         $filename = $thesis['original_filename'] ?? basename($thesis['file_path']);
         $filename = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $filename); // Sanitize filename
-        
+
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
-        header('Content-Length: ' . filesize($filePath));
+        header('Content-Length: ' . filesize($realPath));
         header('Cache-Control: private');
         header('Pragma: private');
         header('Expires: 0');
@@ -370,8 +416,8 @@ class AdminController {
         // Clear output buffer
         ob_clean();
         flush();
-        
-        readfile($filePath);
+
+        readfile($realPath);
         exit;
     }
 
@@ -383,11 +429,47 @@ class AdminController {
         }
 
         try {
+            // Get thesis details before deletion for better logging
+            $thesis = $this->thesisModel->find($id);
+            if (!$thesis) {
+                set_flash('error', 'Thesis not found.');
+                redirect('admin/dashboard');
+            }
+
+            // Check if user has permission to delete
+            $currentUser = current_user();
+            $canDelete = false;
+
+            // Admin and Faculty can both delete any thesis
+            if (in_array($currentUser['role'], ['admin', 'faculty'])) {
+                $canDelete = true;
+            }
+
+            if (!$canDelete) {
+                set_flash('error', 'You do not have permission to delete this thesis.');
+                redirect('admin/dashboard');
+            }
+
+            // Delete the thesis and associated file
             $success = $this->thesisModel->delete($id);
-            
+
             if ($success) {
-                $this->logActivity(current_user()['id'], 'thesis_deleted', $id);
-                set_flash('success', 'Thesis deleted successfully.');
+                // Delete the physical PDF file if it exists
+                if (!empty($thesis['file_path'])) {
+                    $filePath = __DIR__ . '/../' . $thesis['file_path'];
+                    if (file_exists($filePath)) {
+                        @unlink($filePath); // @ suppresses errors if file doesn't exist
+                    }
+                }
+
+                $this->logActivity($currentUser['id'], 'thesis_deleted', $id);
+
+                // Log with more detail if it was an approved thesis
+                if ($thesis['status'] === 'approved') {
+                    error_log("IMPORTANT: Approved thesis deleted - ID: {$id}, Title: {$thesis['title']}, By: {$currentUser['name']} ({$currentUser['email']})");
+                }
+
+                set_flash('success', 'Thesis "' . htmlspecialchars($thesis['title']) . '" deleted successfully.');
             } else {
                 set_flash('error', 'Failed to delete thesis.');
             }
@@ -481,7 +563,7 @@ class AdminController {
             try {
                 switch ($action) {
                     case 'approve':
-                        if ($this->thesisModel->updateStatus($id, 'approved')) {
+                        if ($this->thesisModel->updateStatus($id, 'approved', current_user()['id'])) {
                             $successCount++;
                             $this->logActivity(current_user()['id'], 'thesis_approved', $id);
                         }

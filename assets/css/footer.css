@@ -3,13 +3,14 @@
 ----------------------------- */
 
 .site-footer {
-    background: #e8e8e8;
-    border-top: 1px solid #ccc;
+    background: var(--footer-bg);
+    border-top: 2px solid var(--border-primary);
     padding: 20px 40px;
     text-align: center;
     font-size: 14px;
-    color: #666;
+    color: var(--footer-text);
     margin-top: auto;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .footer-content {
@@ -24,6 +25,11 @@
     flex: 1;
 }
 
+.footer-text p {
+    color: var(--footer-text);
+    margin: 0;
+}
+
 .footer-nav {
     display: flex;
     gap: 5px;
@@ -32,17 +38,18 @@
 
 .footer-nav a {
     text-decoration: none;
-    color: #666;
+    color: var(--footer-link);
     padding: 5px 10px;
     transition: color 0.2s ease;
+    font-weight: 500;
 }
 
 .footer-nav a:hover {
-    color: #d32f2f;
+    color: var(--accent-primary);
 }
 
 .footer-nav .separator {
-    color: #999;
+    color: var(--footer-separator);
     margin: 0 5px;
 }
 

@@ -224,13 +224,13 @@
     <!-- Flash Messages -->
     <?php if (has_flash('success')): ?>
         <div class="alert alert-success">
-            ✅ <?= htmlspecialchars(get_flash('success')) ?>
+             <?= htmlspecialchars(get_flash('success')) ?>
         </div>
     <?php endif; ?>
 
     <?php if (has_flash('error')): ?>
         <div class="alert alert-error">
-            ❌ <?= htmlspecialchars(get_flash('error')) ?>
+             <?= htmlspecialchars(get_flash('error')) ?>
         </div>
     <?php endif; ?>
 
@@ -247,7 +247,7 @@
         
         <div class="button-group">
             <a href="<?= route('admin/pdfview') ?>&id=<?= $thesis['id'] ?>" class="btn btn-primary" target="_blank">
-                👁 View PDF
+                 View PDF
             </a>
             <a href="<?= route('admin/dashboard') ?>" class="btn btn-secondary">
                 ← Back to Dashboard
@@ -257,7 +257,7 @@
 
     <!-- Add Comment Form -->
     <div class="comment-form">
-        <h3>💬 Add Comment or Feedback</h3>
+        <h3> Add Comment or Feedback</h3>
         
         <form method="POST">
             <div class="form-group">
@@ -277,7 +277,7 @@
             </div>
             
             <button type="submit" class="btn btn-primary">
-                💬 Add Comment
+                 Add Comment
             </button>
         </form>
     </div>
@@ -285,7 +285,7 @@
     <!-- Comments List -->
     <div class="comments-list">
         <div class="comments-header">
-            <h3>📝 Comments & Feedback (<?= count($comments ?? []) ?>)</h3>
+            <h3> Comments & Feedback (<?= count($comments ?? []) ?>)</h3>
         </div>
         
         <?php if (!empty($comments)): ?>
@@ -311,7 +311,7 @@
             <?php endforeach; ?>
         <?php else: ?>
             <div class="no-comments">
-                <div style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;">💭</div>
+                <div style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></div>
                 <h4>No Comments Yet</h4>
                 <p>Be the first to add feedback or comments about this thesis.</p>
             </div>
@@ -321,13 +321,13 @@
     <!-- Quick Actions -->
     <?php if (current_user()['role'] === 'admin' || current_user()['role'] === 'faculty'): ?>
     <div class="comment-form" style="margin-top: 25px;">
-        <h3>⚡ Quick Actions</h3>
+        <h3> Quick Actions</h3>
         <div class="button-group">
             <?php if ($thesis['status'] !== 'approved'): ?>
                 <a href="<?= route('admin/approve') ?>&id=<?= $thesis['id'] ?>" 
                    class="btn btn-success"
                    onclick="return confirm('Approve this thesis for publication?')">
-                    ✅ Approve Thesis
+                     Approve Thesis
                 </a>
             <?php endif; ?>
             
@@ -335,13 +335,13 @@
                 <a href="<?= route('admin/reject') ?>&id=<?= $thesis['id'] ?>" 
                    class="btn" style="background: #dc3545; color: white;"
                    onclick="return confirm('Reject this thesis?')">
-                    ❌ Reject Thesis
+                     Reject Thesis
                 </a>
             <?php endif; ?>
             
             <?php if (!empty($thesis['file_path'])): ?>
                 <a href="<?= route('admin/download') ?>&id=<?= $thesis['id'] ?>" class="btn btn-info">
-                    📥 Download PDF
+                     Download PDF
                 </a>
             <?php endif; ?>
         </div>

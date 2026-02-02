@@ -1,6 +1,67 @@
-# Ignore debugging or one-time seed scripts
+# Environment and Configuration
+.env
+.env.local
+.env.production
+
+# Logs
+logs/
+*.log
+php_errors.log
+
+# Uploaded files (keep directory structure but ignore contents)
+uploads/theses/*.pdf
+!uploads/theses/.htaccess
+!uploads/theses/index.php
+
+# Composer
+vendor/
+composer.lock
+composer.phar
+
+# Test and debug files
+test_*.php
+debug_*.php
+check_*.php
+*_test.php
+*_debug.php
 seed.php
 debug_login.php
 debug_login2.php
 reset_faculty_password.php
 make_hash.php
+cleanup_for_production.php
+add_password_reset_columns.php
+
+# Setup and migration files (after running)
+setup_database.php
+create_admin.php
+create_super_admin.php
+add_*.php
+import_*.php
+extract_*.php
+clear_text.php
+make_public.php
+
+# IDE and Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Temporary files
+tmp/
+temp/
+cache/
+*.tmp
+*.cache
+
+# Backup files
+*.bak
+*.backup
+*.old

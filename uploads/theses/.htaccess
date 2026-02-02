@@ -1,6 +1,9 @@
-# Prevent direct execution
+# Prevent direct execution of scripts
 Options -ExecCGI -Indexes
 AddHandler cgi-script .php .pl .py .jsp .asp .sh .cgi
+
+# Allow inline viewing of PDFs
 <Files ~ "\.(pdf)$">
-    Header set Content-Disposition attachment
+    Header set Content-Type "application/pdf"
+    Header set Content-Disposition "inline"
 </Files>

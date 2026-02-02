@@ -8,10 +8,11 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
+    poppler-utils \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Enable Apache's rewrite module for clean URLs
-RUN a2enmod rewrite
+# Enable Apache modules for clean URLs and PDF headers
+RUN a2enmod rewrite headers
 
 # Copy the application code into the container
 COPY . /var/www/html/
